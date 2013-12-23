@@ -45,7 +45,7 @@ class Point
     end
     ordernum=actionlist.index(action)
     result=myresults[ordernum]
-    log(self.to_s+":")
+    log(self.to_s+": .ifdo function called, result='"+result+"'")
     return result
     end
     
