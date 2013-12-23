@@ -1,6 +1,36 @@
+$lives=5; $energy=100; $altitude=10;
 class Point
-    attr_accessor :x, :y, :ground, :object
+    attr_accessor :x, :y, :ground, :object, :gtype
     attr_reader :id
+    def when(action)
+    actionlist=["fall","jump","swim","sit"]
+    resultsperType={
+        "rocksolid"=>['You will lose 1/2 lives, lose 8 altitude', 'You will lose 5 energy, gain 3 altitude', 'Not possible','You will lose 4 altitude, lose 2 energy'],
+        "softy"=>['You will lose 8 altitude','You will lose 5 energy, gain 3 altitude', 'Not possible', 'You will lose 4 altitude, lose 1 1/2 energy'],
+        "dangerous"=>['You will lose 3 1/2 lives, lose 8 altitude', 'You will lose 10 energy, gain 3 altitude', 'You will lose 4 1/2 lives','You will lose 4 altitude, lose 2 1/2 lives']
+    }
+    if (resultsperType.include?(@gtype)===false) then
+        raise "Ground Type does not comply"
+    end
+    myresults=resultsperType[@gtype]
+    if (actionlist.include?(action)===false) then
+        raise "Action type does not comply"
+    end
+    ordernum=actionlist.index(action)
+    result=myresults[ordernum]
+    return myresult
+    end
+    def setGType
+        case @ground;
+        when "asphalt", "rock", "concrete", "wood"
+            @gtype="rocksolid"
+        when "carpet", "bed", "mat"
+            @gtype="softy"
+        when "lava", "magma", "fire", "spikes", "poison"
+            @gtype="dangerous"
+        end
+        return @gtype;
+    end
     def initialize(x,y,ground,object=nil)
     @id=rand(999999999)
         @x=x
@@ -15,6 +45,7 @@ class Point
         if (obj===nil) then
             obj=" no objects"
         end
+        setGType();
         puts "Point created at #{@x}, #{@y}, on #{@ground}, with"+obj
     end
     def getloc
@@ -29,6 +60,7 @@ class Point
     end
 end
 $loc=Point.new(1,1,'asphalt')
+
 def walk(up,right)
     $loc.x+=up
     $loc.y+=right
