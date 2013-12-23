@@ -1,5 +1,23 @@
- # Important Variables
- $lives=5; $energy=100; $altitude=10;
+ #===== Variable Declarations ===
+    # Important Variables
+        $lives=5; $energy=100; $altitude=10;
+    
+    #System Constants
+        $cursession=1; $playid=rand(9^5);  
+        $credits="Game created completely by Adihaya. Help in testing comes from VasantVR."
+            #The Console Object
+            $console={
+                :log=>"Console/Log:",
+                :errors=>"Error Log:"
+            }
+                #Console Functions
+                def log(msg)
+                    $console[:log]+="\n"+msg;
+                end
+                def error(msg)
+                    $console[:log]+="\n"+"Error: "+msg;
+                    $console[:errors]+="\n"+msg;
+                end
  
  #A Point is an area on the gamegrid
 class Point
@@ -118,16 +136,16 @@ puts "\n"
 end
 
 #Lives?: access the lives variable
-def lives? 
+def lives!
     puts $lives;
 end 
 
 #Energy?: access the energy variable
-def energy?
+def energy!
 puts $energy
 end
 #Altitude?: access the altitude variable
-def altitude?
+def altitude!
 puts $altitude
 end
 #============== END Commands =====
@@ -159,13 +177,15 @@ if (p2over===true) then
     puts "You... Are... BLIND"
     puts "\n No, I mean it. In GameGrid, you conquer with a disadvantage: you can't see. You have to do actions like walking, by commanding you're loyal servant (his life is to help you with your blindness). "
     puts "But... the goal of this journey... the reason you're playing here... is to overcome this disadvantage. To do so, you must capture The Royal Eyes from the evil Zuki. When you do so, you can see, better than anyone else (and win the game). But... we're not there yet. So let's get started, with more commands! (Ugh, this is boring, you might be thinking, but it'll help you lots)"
-    puts "\n Okay, lets learn about some important variables in your life. To access important variables, you attach a ? sign after it's name. One of the important variables, is lives. This is how many lives you have left. You start out with 5, and can have 5 as a maximum. To access this variable, you have to command lives? . More important variables include energy and altitude. Energy is how much energy you have in you. Activities (commands) like jumping, use up energy. You start with and have a max of 100 energy. Altitude is how high your head is from the ground. Sounds boring, but knowing the altitude helps in battles. To command for energy and altitude, you command energy?, and altitude?. Why don't you try commanding for one of these important variables?"
+    puts "\n Okay, lets learn about some important variables in your life. To access important variables, you attach a ! sign after it's name. One of the important variables, is lives. This is how many lives you have left. You start out with 5, and can have 5 as a maximum. To access this variable, you have to command lives! . More important variables include energy and altitude. Energy is how much energy you have in you. Activities (commands) like jumping, use up energy. You start with and have a max of 100 energy. Altitude is how high your head is from the ground. Sounds boring, but knowing the altitude helps in battles. To command for energy and altitude, you command energy!, and altitude!. Why don't you try commanding for one of these important variables?"
     command=gets.chomp+""
     eval(command); p3over=false;
-    if (command.index("?")!=nil) then
+    if (command.index("!")!=nil) then
         p3over=true;
-        puts "Yay! You did it! Typing commands for variables like the one you typed: "+command+" helps in the future."
+        puts "\n\nYay! You did it! Typing commands for variables like the one you typed: "+command+" helps in the future."
     end
-        
+if (p3over===true) then
+    puts "\n\n\n Now let's learn about some (a bit boring) stuff. Lets learn about system constants. These constants are system-specified. One of them is called credits. Credits are not very important to you, but they tell you who helped create GameGrid. Credits can be accessed via the credits? command. Commands that end with the ? sign are system constants. Another system constant is log and errors. The log shows system developer operations, errors shows errors that occured in the system. Logs are accessed with the log? command, errors with the errors? command. Why don't you check out the credits, by typing credits? below:"
+end
 end
 end
