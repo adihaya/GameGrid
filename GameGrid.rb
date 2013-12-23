@@ -1,4 +1,4 @@
-$lives=5; $energy=100; $altitude=10;
+ $lives=5; $energy=100; $altitude=10;
 class Point
     attr_accessor :x, :y, :object, :gtype
     attr_reader :id, :ground
@@ -34,7 +34,7 @@ class Point
     def result(action)
     actionlist=["fall","jump","swim","sit"]
     resultsperType={
-        "rocksolid"=>['$lives-=1.5; $altitude-=', '$energy-=5; $altitude+=3', '','$altitude-=4; $energy-=2'],
+        "rocksolid"=>['$lives-=1.5; $altitude-=8', '$energy-=5; $altitude+=3', '','$altitude-=4; $energy-=2'],
         "softy"=>['$altitude-=8','$energy-=5; $altitude+=3', '', '$altitude-=4, $energy-=1.5;'],
         "dangerous"=>['$lives-=3.5; $altitude-=8', '$energy-=10; $altitude+=3', '$lives-=4.5','$altitude-=4; $lives-=2.5']
     }
@@ -77,9 +77,9 @@ class Point
     end
     def this
     if (@object===nil) then
-        return 'at '+@x+', #'+@y+', on '+@ground+', with no objects found.'
+        return 'at '+@x.to_s+', #'+@y.to_s+', on '+@ground+', with no objects found.'
     else
-        return 'at '+@x+', #'+@y+', on '+@ground+', with a '+@object+' found on the ground.'
+        return 'at '+@x.to_s+', #'+@y.to_s+', on '+@ground+', with a '+@object+' found on the ground.'
     end
     end
 end
@@ -90,8 +90,11 @@ def walk(up,right)
     $loc.y+=right
     puts "Walked #{up} points up, and #{right} points to the right. Standing on #{$loc.x}, #{$loc.y}. Location: #{$loc.this}"
 end
+fell=false;
 def fall() 
-
+$loc.result("fall")
+fell=true;
+puts "\n"
 end
 
 #============== END Commands =====
@@ -102,14 +105,20 @@ puts "Points are locations on the gamegrid. You can also move around by executin
 command=gets
 eval(command)
 if $loc.x===2 then
-    p1over=true;puts "Congrats! Did you see that? You moved up on the GameGrid, by 1 point. Using the walk(up,right) command lets your player abstractly walk the grid."; 
+    p1over=true;puts "\n Congrats! Did you see that? You moved up on the GameGrid, by 1 point. Using the walk(up,right) command lets your player abstractly walk the grid."; 
 else
     p1over=false; return "Are you sure you typed walk(1,0) exactly? I don't think so. Remember to type EXACTLY what is shown. Type play to retry the tutorial."; 
 end
 if (p1over===true) then
+fell=false;
     $loc.ground="asphalt"
     puts "Okay, now let's talk about the ground. The ground you currently stand on, is asphalt. You might be thinking, asphalt's just fine. But try this: type command fall() and watch the results."
     command=gets
     eval(command)
+    p2over=false;
+    p2over=true if fell===true;
+end
+if (p2over===true) then
+    puts "Excellent! You really know what you're doing."
 end
 end
