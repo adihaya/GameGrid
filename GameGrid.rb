@@ -18,7 +18,7 @@ class Point
     end
     ordernum=actionlist.index(action)
     result=myresults[ordernum]
-    return myresult
+    return result
     end
     def setGType
         case @ground;
@@ -67,7 +67,7 @@ def walk(up,right)
     puts "Walked #{up} points up, and #{right} points to the right. Standing on #{$loc.x}, #{$loc.y}. Location: #{$loc.this}"
 end
 def play 
-$loc.x=1; $loc.y=1; # Reset curreny loc
+$loc.x=1; $loc.y=1; # Reset current loc
 puts "Welcome to GameGrid, the in-console game. You are currently standing on something called a Point. You are standing "+$loc.this
 puts "Points are locations on the gamegrid. You can also move around by executing commands. Why don't you try typing walk(1,0) ?"
 command=gets
