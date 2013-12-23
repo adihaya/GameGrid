@@ -45,6 +45,7 @@ class Point
     end
     ordernum=actionlist.index(action)
     result=myresults[ordernum]
+    log(self.to_s+":")
     return result
     end
     
@@ -138,19 +139,36 @@ fell=true;
 puts "\n"
 end
 
-#Lives?: access the lives variable
+#Lives!: access the lives variable
 def lives!
     puts $lives;
 end 
 
-#Energy?: access the energy variable
+#Energy!: access the energy variable
 def energy!
 puts $energy
 end
-#Altitude?: access the altitude variable
+#Altitude!: access the altitude variable
 def altitude!
 puts $altitude
 end
+
+
+
+#SystemConstant Access commands
+def credits?
+puts $credits
+end
+def log?
+puts $console[:log]
+end
+def errors?
+puts $console[:errors]
+end
+def getconsole?
+puts $console
+end
+
 #============== END Commands =====
 #Play: start the game tutorial
 def play 
