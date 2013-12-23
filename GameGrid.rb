@@ -1,4 +1,7 @@
- #===== Variable Declarations ===
+#=============================GameGrid, an in-console game===========================#
+
+
+#===== Variable Declarations ===
     # Important Variables
         $lives=5; $energy=100; $altitude=10;
     
