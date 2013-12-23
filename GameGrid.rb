@@ -91,9 +91,9 @@ class Point
     #This: Basic info about this point
     def this
     if (@object===nil) then
-        return 'at '+@x.to_s+', #'+@y.to_s+', on '+@ground+', with no objects found.'
+        return 'at '+@x.to_s+', '+@y.to_s+', on '+@ground+', with no objects found.'
     else
-        return 'at '+@x.to_s+', #'+@y.to_s+', on '+@ground+', with a '+@object+' found on the ground.'
+        return 'at '+@x.to_s+', '+@y.to_s+', on '+@ground+', with a '+@object+' found on the ground.'
     end
     end
 end
