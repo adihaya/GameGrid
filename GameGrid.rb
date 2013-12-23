@@ -34,7 +34,7 @@ class Point
     def result(action)
     actionlist=["fall","jump","swim","sit"]
     resultsperType={
-        "rocksolid"=>['$lives-=1.5; $altitude-=8', '$energy-=5; $altitude+=3', '','$altitude-=4; $energy-=2'],
+        "rocksolid"=>['$lives-=0.5; $altitude-=8', '$energy-=5; $altitude+=3', '','$altitude-=4; $energy-=2'],
         "softy"=>['$altitude-=8','$energy-=5; $altitude+=3', '', '$altitude-=4, $energy-=1.5;'],
         "dangerous"=>['$lives-=3.5; $altitude-=8', '$energy-=10; $altitude+=3', '$lives-=4.5','$altitude-=4; $lives-=2.5']
     }
@@ -96,7 +96,15 @@ $loc.result("fall")
 fell=true;
 puts "\n"
 end
-
+def lives? 
+    puts $lives;
+end 
+def energy?
+puts $energy
+end
+def altitude?
+puts $altitude
+end
 #============== END Commands =====
 def play 
 $loc.x=1; $loc.y=1; # Reset current loc
@@ -113,12 +121,25 @@ if (p1over===true) then
 fell=false;
     $loc.ground="asphalt"
     puts "Okay, now let's talk about the ground. The ground you currently stand on, is asphalt. You might be thinking, asphalt's just fine. But try this: type command fall() and watch the results."
+    $lives=5; $altitude=10; $energy=100;
     command=gets
     eval(command)
     p2over=false;
-    p2over=true if fell===true;
+    p2over=true if ($lives===4.5&&$altitude=2);
 end
 if (p2over===true) then
     puts "Excellent! You really know what you're doing."
+    puts "Okay, you know how to walk and fall. You might think you already know how to do everything. But in this game... in this dimension.... "
+    puts "You... Are... BLIND"
+    puts "\n No, I mean it. In GameGrid, you conquer with a disadvantage: you can't see. You have to do actions like walking, by commanding you're loyal servant (his life is to help you with your blindness). "
+    puts "But... the goal of this journey... the reason you're playing here... is to overcome this disadvantage. To do so, you must capture The Royal Eyes from the evil Zuki. When you do so, you can see, better than anyone else (and win the game). But... we're not there yet. So let's get started, with more commands! (Ugh, this is boring, you might be thinking, but it'll help you lots)"
+    puts "\n Okay, lets learn about some important variables in your life. To access important variables, you attach a ? sign after it's name. One of the important variables, is lives. This is how many lives you have left. You start out with 5, and can have 5 as a maximum. To access this variable, you have to command lives? . More important variables include energy and altitude. Energy is how much energy you have in you. Activities (commands) like jumping, use up energy. You start with and have a max of 100 energy. Altitude is how high your head is from the ground. Sounds boring, but knowing the altitude helps in battles. To command for energy and altitude, you command energy?, and altitude?. Why don't you try commanding for one of these important variables?"
+    command=gets.chomp+""
+    eval(command); p3over=false;
+    if (command.index("?")!=nil) then
+        p3over=true;
+        puts "Yay! You did it! Typing commands for variables like the one you typed: "+command+" helps in the future."
+    end
+        
 end
 end
