@@ -1,7 +1,13 @@
+ # Important Variables
  $lives=5; $energy=100; $altitude=10;
+ 
+ #A Point is an area on the gamegrid
 class Point
+    #Attributes of your point
     attr_accessor :x, :y, :object, :gtype
     attr_reader :id, :ground
+    
+    #Ifdo: What might happen if you do (action)?
     def ifdo(action)
     actionlist=["fall","jump","swim","sit"]
     resultsperType={
@@ -20,6 +26,8 @@ class Point
     result=myresults[ordernum]
     return result
     end
+    
+    #SetGType: What type of ground am I standing on?
     def setGType
         case @ground;
         when "asphalt", "rock", "concrete", "wood"
@@ -31,6 +39,8 @@ class Point
         end
         return @gtype;
     end
+    
+    #Result: Do (action) for me.
     def result(action)
     actionlist=["fall","jump","swim","sit"]
     resultsperType={
@@ -50,11 +60,13 @@ class Point
     puts ifdo(action)
     eval(result)
     end
-    
+    #Ground=: Set the ground to any ground area (aka. rock)
     def ground=(target)
         @ground=target
         setGType()
     end
+    
+    #Initialize: Set the required variables in the beginning of time
     def initialize(x,y,ground,object=nil)
     @id=rand(999999999)
         @x=x
@@ -75,6 +87,8 @@ class Point
     def getloc
         return 'hi'
     end
+    
+    #This: Basic info about this point
     def this
     if (@object===nil) then
         return 'at '+@x.to_s+', #'+@y.to_s+', on '+@ground+', with no objects found.'
@@ -83,29 +97,41 @@ class Point
     end
     end
 end
+
+#Create $loc, the point you are standing on (current location)
 $loc=Point.new(1,1,'asphalt')
 # ============= Commands ========
+
+#Walk: walk around the grid
 def walk(up,right)
     $loc.x+=up
     $loc.y+=right
     puts "Walked #{up} points up, and #{right} points to the right. Standing on #{$loc.x}, #{$loc.y}. Location: #{$loc.this}"
 end
 fell=false;
+
+#Fall: fall down onto the ground (ouch)
 def fall() 
 $loc.result("fall")
 fell=true;
 puts "\n"
 end
+
+#Lives?: access the lives variable
 def lives? 
     puts $lives;
 end 
+
+#Energy?: access the energy variable
 def energy?
 puts $energy
 end
+#Altitude?: access the altitude variable
 def altitude?
 puts $altitude
 end
 #============== END Commands =====
+#Play: start the game tutorial
 def play 
 $loc.x=1; $loc.y=1; # Reset current loc
 puts "Welcome to GameGrid, the in-console game. You are currently standing on something called a Point. You are standing "+$loc.this
