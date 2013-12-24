@@ -213,7 +213,7 @@ if (p3over===true) then
     puts "Are you sure you typed 'credits?' exactly? Don't type for an other system variable like log?, as we wanted you to type for the credits variable. Type play to retry." if p4over===false;
 end
 if (p4over===true) then
-    puts 'p4over'
+    puts "\n\nYou're a fast learner! Okay, we'll learn a few last things before we get to freestyle commands. Which reminds me of command center. The command center, is the place to utilize these commands you've learned. You can easily access it by commanding 'cc?!'"
 end
 end
 end
