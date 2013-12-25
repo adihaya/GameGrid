@@ -22,7 +22,7 @@ $platsur="browser"
         $tutorialon=true;
     #System Constants
         $cursession=1; $playid=rand(9^5);  
-        $credits="Game created completely by Adihaya. Help in testing comes from VasantVR."
+        $credits="Game created completely by Adihaya. Help in testing comes from VasantVR.\n See out GitHub address for all our GameGrid code:\n'"+$githubaddr+"'"
             #The Console Object
             $console={
                 :log=>"Console/Log:",
