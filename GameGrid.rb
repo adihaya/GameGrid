@@ -1,7 +1,22 @@
 #=============================GameGrid, an in-console game===========================#
-
+$platsur="browser"
 
 #===== Variable Declarations ===
+    #GG Code Variables
+    $githubaddr="http://www.github.com/Adihaya/GameGrid/?ref=learnstreet.com/scratchpad/ruby?ggplay";
+    $modechoices={ :player=>0, :developer=>1, :administrator=>2 }
+    $mode=$modechoices[:developer]
+        #This only works if you are on command prompt/Terminal, won't work in browser
+        # so if you are NOT in browser, delete the "#" on the below line:
+        # $platsur="cp";
+        if ($platsur==="cp") then
+            require 'socket'
+            $ip=Socket::getaddrinfo(Socket.gethostname,"echo",Socket::AF_INET)[0][3]
+        elsif ($platsur==="browser") then
+            $ip="192.168.1.1" #< This is your router ip, always
+        else 
+            $ip="64.233.187.99" #< This is one of Google's IP Pool
+        end
     # Important Variables
         $lives=5; $energy=100; $altitude=10;
         $tutorialon=true;
@@ -28,7 +43,7 @@ class Point
     attr_accessor :x, :y, :object, :gtype
     attr_reader :id, :ground
     
-    #Ifdo: What might happen if you do (action)?
+    #Ifdo: What might happen if you do <action>?
     def ifdo(action)
     actionlist=["fall","jump","swim","sit"]
     resultsperType={
@@ -123,7 +138,9 @@ end
 #Create $loc, the point you are standing on (current location)
 $loc=Point.new(1,1,'asphalt')
 # ============= Commands ========
-
+def webhost!
+    puts "Your host Internet Protocol Address (IP) is: \n"+$ip;
+end
 #Walk: walk around the grid
 def walk(up,right)
     $loc.x+=up
@@ -172,70 +189,83 @@ end
 #============== END Commands =====
 #Play: start the game tutorial
 def play 
-if ($tutorialon===true) then
-$loc.x=1; $loc.y=1; # Reset current loc
-puts "Welcome to GameGrid, the in-console game. You are currently standing on something called a Point. You are standing "+$loc.this
-puts "Points are locations on the gamegrid. You can also move around by executing commands. Why don't you try typing walk(1,0) ?"
-command=gets
-eval(command)
-if $loc.x===2 then
-    p1over=true;puts "\n Congrats! Did you see that? You moved up on the GameGrid, by 1 point. Using the walk(up,right) command lets your player abstractly walk the grid."; 
-else
-    p1over=false; return "Are you sure you typed walk(1,0) exactly? I don't think so. Remember to type EXACTLY what is shown. Type play to retry the tutorial."; 
+if ($tutorialon=false) then; puts "DevProto"
+    log("Tutorial access denied: $tutorialon=false")
+    
 end
-if (p1over===true) then
-fell=false;
-    $loc.ground="asphalt"
-    puts "Okay, now let's talk about the ground. The ground you currently stand on, is asphalt. You might be thinking, asphalt's just fine. But try this: type command fall() and watch the results."
-    $lives=5; $altitude=10; $energy=100;
+if ($tutorialon===true) then
+    $loc.x=1; $loc.y=1; # Reset current loc
+    puts "Welcome to GameGrid, the in-console game. You are currently standing on something called a Point. You are standing "+$loc.this
+    puts "Points are locations on the gamegrid. You can also move around by executing             commands. Why don't you try typing walk(1,0) ?"
     command=gets
     eval(command)
-    p2over=false;
-    p2over=true if ($lives===4.5&&$altitude=2);
-end
-if (p2over===true) then
-    puts "Excellent! You really know what you're doing."
-    puts "Okay, you know how to walk and fall. You might think you already know how to do everything. But in this game... in this dimension.... "
-    puts "You... Are... BLIND"
-    puts "\n No, I mean it. In GameGrid, you conquer with a disadvantage: you can't see. You have to do actions like walking, by commanding you're loyal servant (his life is to help you with your blindness). "
-    puts "But... the goal of this journey... the reason you're playing here... is to overcome this disadvantage. To do so, you must capture The Royal Eyes from the evil Zuki. When you do so, you can see, better than anyone else (and win the game). But... we're not there yet. So let's get started, with more commands! (Ugh, this is boring, you might be thinking, but it'll help you lots)"
-    puts "\n Okay, lets learn about some important variables in your life. To access important variables, you attach a ! sign after it's name. One of the important variables, is lives. This is how many lives you have left. You start out with 5, and can have 5 as a maximum. To access this variable, you have to command lives! . More important variables include energy and altitude. Energy is how much energy you have in you. Activities (commands) like jumping, use up energy. You start with and have a max of 100 energy. Altitude is how high your head is from the ground. Sounds boring, but knowing the altitude helps in battles. To command for energy and altitude, you command energy!, and altitude!. Why don't you try commanding for one of these important variables?"
-    command=gets.chomp+""
-    eval(command); p3over=false;
-    if (command.index("!")!=nil) then
-        p3over=true;
-        puts "\n\nYay! You did it! Typing commands for variables like the one you typed: "+command+" helps in the future."
+        if $loc.x===2 then
+            p1over=true;puts "\n Congrats! Did you see that? You moved up on the GameGrid, by 1 point. Using the walk(up,right) command lets your player abstractly walk the grid."; 
+        else
+            p1over=false; return "Are you sure you typed walk(1,0) exactly? I don't think so. Remember to type EXACTLY what is shown. Type play to retry the tutorial."; 
+        end
+        
+    if (p1over===true) then
+        fell=false;
+        $loc.ground="asphalt"
+        puts "Okay, now let's talk about the ground. The ground you currently stand on, is asphalt. You might be thinking, asphalt's just fine. But try this: type command fall() and watch the results."
+        $lives=5; $altitude=10; $energy=100;
+        command=gets
+         eval(command)
+        p2over=false;
+        p2over=true if ($lives===4.5&&$altitude===2);
     end
-if (p3over===true) then
-    puts "\n\n\n Now let's learn about some (a bit boring) stuff. Lets learn about system constants. These constants are system-specified. One of them is called credits. Credits are not very important to you, but they tell you who helped create GameGrid. Credits can be accessed via the credits? command. Commands that end with the ? sign are system constants. Another system constant is log and errors. The log shows system developer operations, errors shows errors that occured in the system. Logs are accessed with the log? command, errors with the errors? command. Why don't you check out the credits, by typing credits? below:\n"
-    command=gets.chomp; p4over=false;
-    eval(command)
-    p4over=true if command.index('credits?')!=-1;
-    puts "Are you sure you typed 'credits?' exactly? Don't type for an other system variable like log?, as we wanted you to type for the credits variable. Type play to retry." if p4over===false;
-end
-if (p4over===true) then
-    puts "\n\nYou're a fast learner! Okay, we'll learn a few last things before we get to freestyle commands. Which reminds me of command center. The command center, is the place to utilize these commands you've learned. You can easily access it by commanding 'freestyle'. But the most important thing we need to learn: battles. Let's begin our battle tutorial. \n\n Pretend you're walking on the street, and you see a bandit with his weak weapon: a stick. It's time for you to learn how to battle. Your weapon currently: kitchen knife. Okay, before you get noticed, jab him on the knee. Type 'attack(:knee)'."
-    command=gets; p5_1over=false;
-    if(command.index("attack")!=-1&&command.index(":knee")!=-1) then
-        p5_1over=true
-    else
-        return "Oh no! We couldn't parse (understand) your command. The bandit noticed you and hit you in the eye. You immediately fainted. Please try the tutorial again."
+    
+    if (p2over===true) then
+        puts "Excellent! You really know what you're doing."
+        puts "Okay, you know how to walk and fall. You might think you already know how to do everything. But in this game... in this dimension.... "
+        puts "You... Are... BLIND"
+        puts "\n No, I mean it. In GameGrid, you conquer with a disadvantage: you can't see. You have to do actions like walking, by commanding you're loyal servant (his life is to help you with your blindness). "
+        puts "But... the goal of this journey... the reason you're playing here... is to overcome this disadvantage. To do so, you must capture The Royal Eyes from the evil Zuki. When you do so, you can see, better than anyone else (and win the game). But... we're not there yet. So let's get started, with more commands! (Ugh, this is boring, you might be thinking, but it'll help you lots)"
+        puts "\n Okay, lets learn about some important variables in your life. To access important variables, you attach a ! sign after it's name. One of the important variables, is lives. This is how many lives you have left. You start out with 5, and can have 5 as a maximum. To access this variable, you have to command lives! . More important variables include energy and altitude. Energy is how much energy you have in you. Activities (commands) like jumping, use up energy. You start with and have a max of 100 energy. Altitude is how high your head is from the ground. Sounds boring, but knowing the altitude helps in battles. To command for energy and altitude, you command energy!, and altitude!. Why don't you try commanding for one of these important variables?"
+        command=gets.chomp+""
+        eval(command); p3over=false;
+        if (command.index("!")!=nil) then
+            p3over=true;
+            puts "\n\nYay! You did it! Typing commands for variables like the one you typed: "+command+" helps in the future."
+        end
     end
-end
-if (p5_1over===true) then
-    puts "Good job! He immediately fell down, and started exxamining his wound. Oh, no! He noticed you! He drops his weapon in awe. Quick! Get his weapon! Type pickup(:weapon) to grab his beating stick."
-    command=gets; p5_2over=false; 
-    if (command.index("pickup")!=-1&&command.index(":weapon")!=-1) then
-        p5_2over=true;
-    else; return "Oh no! We couldn't parse (understand) your command. The bandit caught you and hit you in the eye. You immediately fainted. Please try the tutorial again."
+    if (p3over===true) then
+        puts "\n\n\n Now let's learn about some (a bit boring) stuff. Lets learn about system constants. These constants are system-specified. One of them is called credits. Credits are not very important to you, but they tell you who helped create GameGrid. Credits can be accessed via the credits? command. Commands that end with the ? sign are system constants. Another system constant is log and errors. The log shows system developer operations, errors shows errors that occured in the system. Logs are accessed with the log? command, errors with the errors? command. Why don't you check out the credits, by typing credits? below:\n"
+        command=gets.chomp; p4over=false;
+        eval(command)
+        p4over=true if command.index('credits?')!=-1;
+        puts "Are you sure you typed 'credits?' exactly? Don't type for an other system variable like log?, as we wanted you to type for the credits variable. Type play to retry." if p4over===false;
     end
+    if (p4over===true) then
+        puts "\n\nYou're a fast learner! Okay, we'll learn a few last things before we get to freestyle commands. Which reminds me of command center. The command center, is the place to utilize these commands you've learned. You can easily access it by commanding 'freestyle'. But the most important thing we need to learn: battles. Let's begin our battle tutorial. \n\n Pretend you're walking on the street, and you see a bandit with his weak weapon: a stick. It's time for you to learn how to battle. Your weapon currently: kitchen knife. Okay, before you get noticed, jab him on the knee. Type 'attack(:knee)'."
+        command=gets; p5_1over=false;
+        if(command.index("attack")!=-1&&command.index(":knee")!=-1) then
+           p5_1over=true
+        else
+            return "Oh no! We couldn't parse (understand) your command. The bandit noticed you and hit you in the eye. You immediately fainted. Please try the tutorial again."
+        end
+    end
+    
+    if (p5_1over===true) then
+        puts "Good job! He immediately fell down, and started exxamining his wound. Oh, no! He noticed you! He drops his weapon in awe. Quick! Get his weapon! Type pickup(:weapon) to grab his beating stick."
+        command=gets; p5_2over=false; 
+        if (command.index("pickup")!=-1&&command.index(":weapon")!=-1) then
+            p5_2over=true;
+        else; return "Oh no! We couldn't parse (understand) your command. The bandit caught you and hit you in the eye. You immediately fainted. Please try the tutorial again."
+        end
+    end
+    if (p5_2over===true) then
+        $tutorialon=false;
+        log("Tutorial completed.")
+        puts "Awesome! Now your neighbors have called the police. The job has been done. You know how to walk, jump, attack, get variables, and much more. Your first mission is done. Now get ready for some more awesomeness. You have successfully completed the tutorial."
+    else; return "Oh no! We couldn't parse (understand) your command. The bandit caught you and hit you in the eye. You immediately fainted. Please try the tutorial again."; 
+    end
+
 end
-if (p5_2over===true) then
-    puts "Awesome! Now your neighbors have called the police. The job has been done. You know how to walk, jump, attack, get variables, and much more. Your first mission is done. Now get ready for some more awesomeness. You have successfully completed the tutorial."
-else; return "Oh no! We couldn't parse (understand) your command. The bandit caught you and hit you in the eye. You immediately fainted. Please try the tutorial again."; 
-end
-else
-    return "DEV: this is where $tutorialon=false and real game is here"
-end
+if ($tutorialon=false) then
+    puts "DEVProto"
+    log("Tutorial access denied: $tutorialon=false")
+   
 end
 end
