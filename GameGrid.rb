@@ -4,7 +4,7 @@
 #===== Variable Declarations ===
     # Important Variables
         $lives=5; $energy=100; $altitude=10;
-    
+        $tutorialon=true;
     #System Constants
         $cursession=1; $playid=rand(9^5);  
         $credits="Game created completely by Adihaya. Help in testing comes from VasantVR."
@@ -172,6 +172,7 @@ end
 #============== END Commands =====
 #Play: start the game tutorial
 def play 
+if ($tutorialon===true) then
 $loc.x=1; $loc.y=1; # Reset current loc
 puts "Welcome to GameGrid, the in-console game. You are currently standing on something called a Point. You are standing "+$loc.this
 puts "Points are locations on the gamegrid. You can also move around by executing commands. Why don't you try typing walk(1,0) ?"
@@ -213,7 +214,26 @@ if (p3over===true) then
     puts "Are you sure you typed 'credits?' exactly? Don't type for an other system variable like log?, as we wanted you to type for the credits variable. Type play to retry." if p4over===false;
 end
 if (p4over===true) then
-    puts "\n\nYou're a fast learner! Okay, we'll learn a few last things before we get to freestyle commands. Which reminds me of command center. The command center, is the place to utilize these commands you've learned. You can easily access it by commanding 'cc?!'"
+    puts "\n\nYou're a fast learner! Okay, we'll learn a few last things before we get to freestyle commands. Which reminds me of command center. The command center, is the place to utilize these commands you've learned. You can easily access it by commanding 'freestyle'. But the most important thing we need to learn: battles. Let's begin our battle tutorial. \n\n Pretend you're walking on the street, and you see a bandit with his weak weapon: a stick. It's time for you to learn how to battle. Your weapon currently: kitchen knife. Okay, before you get noticed, jab him on the knee. Type 'attack(:knee)'."
+    command=gets; p5_1over=false;
+    if(command.index("attack")!=-1&&command.index(":knee")!=-1) then
+        p5_1over=true
+    else
+        return "Oh no! We couldn't parse (understand) your command. The bandit noticed you and hit you in the eye. You immediately fainted. Please try the tutorial again."
+    end
+end
+if (p5_1over===true) then
+    puts "Good job! He immediately fell down, and started exxamining his wound. Oh, no! He noticed you! He drops his weapon in awe. Quick! Get his weapon! Type pickup(:weapon) to grab his beating stick."
+    command=gets; p5_2over=false; 
+    if (command.index("pickup")!=-1&&command.index(":weapon")!=-1) then
+        p5_2over=true;
+    else; return "Oh no! We couldn't parse (understand) your command. The bandit caught you and hit you in the eye. You immediately fainted. Please try the tutorial again."
+    end
+end
+if (p5_2over===true) then
+    puts "Awesome! Now your neighbors have called the police. The job has been done. You know how to walk, jump, attack, get variables, and much more. Your first mission is done. Now get ready for some more awesomeness. You have successfully completed the tutorial."
+else; return "Oh no! We couldn't parse (understand) your command. The bandit caught you and hit you in the eye. You immediately fainted. Please try the tutorial again."; 
+end
 end
 end
 end
