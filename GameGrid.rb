@@ -234,6 +234,8 @@ if (p5_2over===true) then
     puts "Awesome! Now your neighbors have called the police. The job has been done. You know how to walk, jump, attack, get variables, and much more. Your first mission is done. Now get ready for some more awesomeness. You have successfully completed the tutorial."
 else; return "Oh no! We couldn't parse (understand) your command. The bandit caught you and hit you in the eye. You immediately fainted. Please try the tutorial again."; 
 end
+else
+    return "DEV: this is where $tutorialon=false and real game is here"
 end
 end
 end
