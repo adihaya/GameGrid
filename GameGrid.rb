@@ -147,6 +147,7 @@ attr_accessor :points, :center, :origin, :xmin, :xmax, :ymin, :ymax, :area, :xdi
         @xdif=(@xmax-@xmin);@ydif=(@ymax-@ymin)
     end
     def updpoints(gr=@ground)
+        puts "Updating points on grid...\n GRID UPDATE NOTICE: Remember, setting x min and max to 0 and 10 will make 11 x-wise rows instead of 10, and setting y min and max to 0 and 10 will make 11 y-wards rows instead of 10!"
         update()
         keepsetting1=true; xnum=@xmin; ynum=@ymin; xmax=@xmax; ymax=@ymax; xnumy=@xmin; 
         while (keepsetting1===true) do
@@ -167,7 +168,7 @@ attr_accessor :points, :center, :origin, :xmin, :xmax, :ymin, :ymax, :area, :xdi
                 keepsetting1=false; break;
             end
         end
-        if (@area===@points.length) then; log("Grid:updpoints:success"); else; log("Grid:updpoints:failed grid.area='#{@area}', grid.points.length='#{@points.length}', area!=points.length");error("Grid:updpoints:failed grid.area='#{@area}', grid.points.length='#{@points.length}', area!=points.length"); end
+        if (@area===@points.length) then; log("Grid:updpoints:success"); else; error("Grid:updpoints:failed grid.area='#{@area}', grid.points.length='#{@points.length}', area!=points.length"); end
     end
     def initialize(xmin,xmax,ymin,ymax,origin=[0,0],center=[0,0],ground="asphalt")
         @id=rand()
