@@ -135,8 +135,61 @@ class Point
     end
 end
 
+class Grid 
+attr_accessor :points, :center, :origin, :xmin, :xmax, :ymin, :ymax, :area, :xdif, :ydif, :ground; attr_reader :id
+@id=rand()
+    def [](x,y)
+        xypair=[x,y]
+        return @points[xypair]
+    end
+        def update
+        @area=(@xmax-@xmin+1)*(@ymax-@ymin+1)
+        @xdif=(@xmax-@xmin);@ydif=(@ymax-@ymin)
+    end
+    def updpoints(gr=@ground)
+        update()
+        keepsetting1=true; xnum=@xmin; ynum=@ymin; xmax=@xmax; ymax=@ymax; xnumy=@xmin; 
+        while (keepsetting1===true) do
+                
+            ynumy=@ymin;
+            keepsetting2=true;
+            while (keepsetting2===true) do
+                curpoint=Point.new(xnum,ynumy,gr);
+                pair=[xnum,ynumy]
+                @points[pair]=curpoint
+                ynumy+=1
+                if (ynumy>ymax)
+                    keepsetting2=false; break;
+                end  
+            end
+            xnum+=1
+            if (xnum>xmax)
+                keepsetting1=false; break;
+            end
+        end
+        if (@area===@points.length) then; log("Grid:updpoints:success"); else; log("Grid:updpoints:failed grid.area='#{@area}', grid.points.length='#{@points.length}', area!=points.length");error("Grid:updpoints:failed grid.area='#{@area}', grid.points.length='#{@points.length}', area!=points.length"); end
+    end
+    def initialize(xmin,xmax,ymin,ymax,origin=[0,0],center=[0,0],ground="asphalt")
+        @id=rand()
+        @xmin=xmin;@xmax=xmax;@ymin=ymin;@ymax=ymax;
+        @area=(@xmax-@xmin+1)*(@ymax-@ymin+1)
+        @xdif=(@xmax-@xmin);@ydif=(@ymax-@ymin)
+        @origin=origin
+        @center=center
+        @points={};
+        @ground=ground
+        updpoints()
+        puts "Initialized Grid."
+    end
+    
+end
+
+
 #Create $loc, the point you are standing on (current location)
-$loc=Point.new(1,1,'asphalt')
+$loc=Point.new(1,1,'asphalt'); puts "^ $loc creation".center(50)
+#Create $grid, the local point grid
+puts "Creating $grid...".center(50); puts "===Grid Point Initialization===".center(50)
+$grid=Grid.new(0,10,0,10)
 # ============= Commands ========
 def webhost!
     puts "Your host Internet Protocol Address (IP) is: \n"+$ip;
@@ -261,7 +314,11 @@ if ($tutorialon===true) then
         puts "Awesome! Now your neighbors have called the police. The job has been done. You know how to walk, jump, attack, get variables, and much more. Your first mission is done. Now get ready for some more awesomeness. You have successfully completed the tutorial."
     else; return "Oh no! We couldn't parse (understand) your command. The bandit caught you and hit you in the eye. You immediately fainted. Please try the tutorial again."; 
     end
-
+if ($tutorialon=false) then
+    puts "DEVProto"
+    log("Tutorial access denied: $tutorialon=false")
+   
+end
 end
 if ($tutorialon=false) then
     puts "DEVProto"
