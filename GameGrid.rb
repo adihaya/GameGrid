@@ -243,10 +243,6 @@ end
 #============== END Commands =====
 #Play: start the game tutorial
 def play 
-if ($tutorialon=false) then; puts "DevProto"
-    log("Tutorial access denied: $tutorialon=false")
-    
-end
 if ($tutorialon===true) then
     $loc.x=1; $loc.y=1; # Reset current loc
     puts "Welcome to GameGrid, the in-console game. You are currently standing on something called a Point. You are standing "+$loc.this
@@ -292,7 +288,16 @@ if ($tutorialon===true) then
         puts "Are you sure you typed 'credits?' exactly? Don't type for an other system variable like log?, as we wanted you to type for the credits variable. Type play to retry." if p4over===false;
     end
     if (p4over===true) then
-        puts "\n\nYou're a fast learner! Okay, we'll learn a few last things before we get to freestyle commands. Which reminds me of command center. The command center, is the place to utilize these commands you've learned. You can easily access it by commanding 'freestyle'. But the most important thing we need to learn: battles. Let's begin our battle tutorial. \n\n Pretend you're walking on the street, and you see a bandit with his weak weapon: a stick. It's time for you to learn how to battle. Your weapon currently: kitchen knife. Okay, before you get noticed, jab him on the knee. Type 'attack(:knee)'."
+        puts "Okay, one last, very critical thing before something awesome and fun: $loc and $grid. These 2 commands are very powerful. They are called 'codejectors' or CJ's. The $loc command outputs a CJ classified as a Point, which is an area on the GameGrid. It represents your current location. The $grid command outputs a CJ, classified as a Grid. It is the actual GameGrid, with tens to thousands of associated points. When you command for these CJs, they will show you some code. You may not understand it, but that doesn't matter. You have to utilitize the 'methods' on these CodeJectors. Methods are ways to uncover info, or do a function. The $loc.this function shows you info about where you're at. $loc.x and $loc.y show you your coordinates. If you command this: $grid[x,y] and replace x and y with valid coordinate numbers, it will  show you a CJ for the point on that coordinated area.\n\nWhy don't you type $grid.points, just to see the code (code means, basically your computer's native language) on that CJ that stores the grid's points?"
+        command=gets
+        if (command.index("$grid.points")!=-1) then
+            puts $grid.points
+            puts "Great job! See all that code? It may seem weird to you, but trust me, once you learn a code language like Ruby or JavaScript, you'll see how simple and effective it is. Let's move on to new stuff, man!"
+            else; return "I don't think you commanded for $grid.points. Try again.";         
+        end
+        
+        
+        puts "\n\nYou're a fast learner! But the most important thing we need to learn: battles. Let's begin our battle tutorial. \n\n Pretend you're walking on the street, and you see a bandit with his weak weapon: a stick. It's time for you to learn how to battle. Your weapon currently: kitchen knife. Okay, before you get noticed, jab him on the knee. Type 'attack(:knee)'."
         command=gets; p5_1over=false;
         if(command.index("attack")!=-1&&command.index(":knee")!=-1) then
            p5_1over=true
