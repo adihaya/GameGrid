@@ -4,8 +4,7 @@
 #DEVELOPERS: The Console Object
             $console={
                 :log=>"Console/Log:",
-                :errors=>"Error Log:",
-                :rblog=>Logger.new
+                :errors=>"Error Log:"
             }
                 #Console Functions
                 def log(msg)
@@ -29,7 +28,7 @@
     $githubaddr="http://www.github.com/Adihaya/GameGrid/?ref=learnstreet.com/scratchpad/ruby?ggplay";
     $modechoices={ :player=>0, :developer=>1, :administrator=>2 }
     $mode=$modechoices[:developer]
-        #This only works if you are on command prompt/Terminal, won't work in browser
+        # Now using Begin/Rescue commands to fix IP issues
         $platsur="cp";
         begin 
         if ($platsur==="cp") then
