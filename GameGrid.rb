@@ -75,7 +75,19 @@
         :username=>scrape_username,
         :syshash=>ENV
     }
-        
+    def beginning_survey
+    puts "\n\n\n\n Hey "+scrape_username+", I see you have properly installed GameGrid! Don't just leave the GameGrid folder in "+ENV["PWD"]+"(downloads), why don't you move it to your Apps folder in /Applications or "+ENV["HOME"]+" for better access? Also, why don't you take this itty-bitty, 3-question survey before you start the game? Remember, we are testing for bugs, and this would really help. When the survey is finished, it will formulate some lettered code. Copy that and email it to tt2d [at] icloud [dot] com. Ready? The survey has begun!"
+    puts "\n Where did you learn about GameGrid? (aka. Google Search, GitHub, flyer, friend told me, etc)"
+    answer1=gets.chomp
+    puts "\n From where did you install GameGrid? (aka. GitHub, I locally had it, friend sent the files in an email, download site, etc)"
+    answer2=gets.chomp
+    puts "\n What out of these 5 categories do you describe yourself as: developer, gamer, tester, kid, parent? (you can type anything else if these  don't suit you)"
+    answer3=gets.chomp
+    arr=[answer1,rand(99999999999),answer2,rand(99999999999),answer3,rand(999999999)]
+    arrs=arr.to_s
+    puts "Thank you! See the code below? Copy that and email it to tt2d [at] icloud [dot] com. Thanks so much! To start playing, type play."
+    return arrs
+    end
     $githubaddr="http://www.github.com/Adihaya/GameGrid/?ref=learnstreet.com/scratchpad/ruby?ggplay";
     $modechoices={ :player=>0, :developer=>1, :administrator=>2 }
     $mode=$modechoices[:developer]
@@ -424,3 +436,8 @@ if ($tutorialon===false) then
    
 end
 end
+
+
+
+
+beginning_survey()
