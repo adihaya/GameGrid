@@ -1,21 +1,49 @@
 #=============================GameGrid, an in-console game===========================#
-$platsur="browser"
 
+
+#DEVELOPERS: The Console Object
+            $console={
+                :log=>"Console/Log:",
+                :errors=>"Error Log:",
+                :rblog=>Logger.new
+            }
+                #Console Functions
+                def log(msg)
+                    $console[:log]+="\n"+msg;
+                end
+                def error(msg, errorType=StandardError)
+                    $console[:log]+="\n"+"Error: "+msg;
+                    $console[:errors]+="\n"+msg;
+                    raise errorType, msg
+                end
+                def errorA(msg)
+                    error(msg,ArgumentError)
+                end
+                def checkA(arg,expclass)
+                    errorA("Argument '#{arg}' is not a #{exptype}.") unless arg.is_a?( expclass);
+                    log("Checking arguments using checkA method... input:#{arg} expected type:#{expclass}")
+                end
+ 
 #===== Variable Declarations ===
     #GG Code Variables
     $githubaddr="http://www.github.com/Adihaya/GameGrid/?ref=learnstreet.com/scratchpad/ruby?ggplay";
     $modechoices={ :player=>0, :developer=>1, :administrator=>2 }
     $mode=$modechoices[:developer]
         #This only works if you are on command prompt/Terminal, won't work in browser
-        # so if you are NOT in browser, delete the "#" on the below line:
-        # $platsur="cp";
+        $platsur="cp";
+        begin 
         if ($platsur==="cp") then
             require 'socket'
             $ip=Socket::getaddrinfo(Socket.gethostname,"echo",Socket::AF_INET)[0][3]
-        elsif ($platsur==="browser") then
+        elsif ($platsur.index("browser")!=-1) then
             $ip="192.168.1.1" #< This is your router ip, always
         else 
             $ip="64.233.187.99" #< This is one of Google's IP Pool
+        end
+        rescue LoadError
+        $platsur="browser (error)";
+        log("RESCUED ERROR: IP Pooling (Socket:getaddrinfo): platform communicated as 'cp' but detected as browser")
+        retry 
         end
     # Important Variables
         $lives=5; $energy=100; $altitude=10;
@@ -23,20 +51,7 @@ $platsur="browser"
     #System Constants
         $cursession=1; $playid=rand(9^5);  
         $credits="Game created completely by Adihaya. Help in testing comes from VasantVR.\n See out GitHub address for all our GameGrid code:\n'"+$githubaddr+"'"
-            #The Console Object
-            $console={
-                :log=>"Console/Log:",
-                :errors=>"Error Log:"
-            }
-                #Console Functions
-                def log(msg)
-                    $console[:log]+="\n"+msg;
-                end
-                def error(msg)
-                    $console[:log]+="\n"+"Error: "+msg;
-                    $console[:errors]+="\n"+msg;
-                end
- 
+            
  #A Point is an area on the gamegrid
 class Point
     #Attributes of your point
@@ -149,6 +164,7 @@ attr_accessor :points, :center, :origin, :xmin, :xmax, :ymin, :ymax, :area, :xdi
     def updpoints(gr=@ground)
         puts "Updating points on grid...\n GRID UPDATE NOTICE: Remember, setting x min and max to 0 and 10 will make 11 x-wise rows instead of 10, and setting y min and max to 0 and 10 will make 11 y-wards rows instead of 10!"
         update()
+        begin
         keepsetting1=true; xnum=@xmin; ynum=@ymin; xmax=@xmax; ymax=@ymax; xnumy=@xmin; 
         while (keepsetting1===true) do
                 
@@ -168,9 +184,15 @@ attr_accessor :points, :center, :origin, :xmin, :xmax, :ymin, :ymax, :area, :xdi
                 keepsetting1=false; break;
             end
         end
-        if (@area===@points.length) then; log("Grid:updpoints:success"); else; error("Grid:updpoints:failed grid.area='#{@area}', grid.points.length='#{@points.length}', area!=points.length"); end
+        if (@area===@points.length) then; log("Grid:updpoints:success"); else; error("Grid:updpoints:failed grid.area='#{@area}', grid.points.length='#{@points.length}', area!=points.length",IndexError); end
+        rescue IndexError
+        @area=@points.length
+        retry
+        end
+        
     end
     def initialize(xmin,xmax,ymin,ymax,origin=[0,0],center=[0,0],ground="asphalt")
+        begin
         @id=rand()
         @xmin=xmin;@xmax=xmax;@ymin=ymin;@ymax=ymax;
         @area=(@xmax-@xmin+1)*(@ymax-@ymin+1)
@@ -180,6 +202,10 @@ attr_accessor :points, :center, :origin, :xmin, :xmax, :ymin, :ymax, :area, :xdi
         @points={};
         @ground=ground
         updpoints()
+        rescue
+        xmin=0,xmax=0,ymin=0,ymax=0,ground="asphalt"
+        retry
+        end
         puts "Initialized Grid."
     end
     
