@@ -22,9 +22,60 @@
                     errorA("Argument '#{arg}' is not a #{exptype}.") unless arg.is_a?( expclass);
                     log("Checking arguments using checkA method... input:#{arg} expected type:#{expclass}")
                 end
- 
+                #Track the client OS
+                def onWindows?
+                    (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
+                end
+
+                def onMac?
+                    (/darwin/ =~ RUBY_PLATFORM) != nil
+                end
+
+                def onUnix?
+                    !onWindows?
+                end
+
+                def onLinux?
+                    onUnix? and not onMac?
+                end
+                
+                def onOtherOS?
+                    !onWindows?&&!onMac?&&!onLinux?&&!onUnix?
+                end
+                
+                def getplatform
+                    plat="other"
+                    plat="windows" if onWindows?;
+                    plat="mac" if onMac?;
+                    #plat="unix" if onUnix?;
+                    plat="linux" if onLinux?
+                    plat="unix" if plat==="other"&&onUnix?
+                    return plat
+                end
+                
+                def getplat
+                    return [getplatform, ENV["_system_version"]]
+                end
+                #Now we ignorantly :D scrape the client's username
+                #but the scrape will fail if they are not in 
+                # command line, so we will use begin/rescue to
+                #resolve errors:
+                def scrape_username
+                    un=ENV["USER"] if onUnix?;
+                    un=ENV["USERNAME"] if onWindows?||!onUnix?;
+                    un="Great One" if un===nil
+                    return un
+                
+                end
 #===== Variable Declarations ===
     #GG Code Variables
+    $client_info={
+        :platform=>getplat(),
+        :ip=>"192.168.1.1",
+        :username=>scrape_username,
+        :syshash=>ENV
+    }
+        
     $githubaddr="http://www.github.com/Adihaya/GameGrid/?ref=learnstreet.com/scratchpad/ruby?ggplay";
     $modechoices={ :player=>0, :developer=>1, :administrator=>2 }
     $mode=$modechoices[:developer]
@@ -33,17 +84,21 @@
         begin 
         if ($platsur==="cp") then
             require 'socket'
-            $ip=Socket::getaddrinfo(Socket.gethostname,"echo",Socket::AF_INET)[0][3]
+            $ip_gateway=Socket::getaddrinfo(Socket.gethostname,"echo",Socket::AF_INET)
+            $ip_socket=$ip_gateway[0]
+            $ip=$ip_socket[3]
         elsif ($platsur.index("browser")!=-1) then
             $ip="192.168.1.1" #< This is your router ip, always
         else 
             $ip="64.233.187.99" #< This is one of Google's IP Pool
         end
+        $client_info[:ip]=$ip;
         rescue LoadError
         $platsur="browser (error)";
         log("RESCUED ERROR: IP Pooling (Socket:getaddrinfo): platform communicated as 'cp' but detected as browser")
         retry 
         end
+        
     # Important Variables
         $lives=5; $energy=100; $altitude=10;
         $tutorialon=true;
@@ -265,11 +320,18 @@ def getconsole?
 puts $console
 end
 
+def email_to_name(email)
+  name = email[/[^@]+/]
+  name.split(".").map {|n| n.capitalize }.join(" ")
+end
+
 #============== END Commands =====
 #Play: start the game tutorial
 def play 
 if ($tutorialon===true) then
     $loc.x=1; $loc.y=1; # Reset current loc
+    puts "Hello, my friend "+$client_info[:username]+", I've been waiting to show you this very cool computer video game called GameGrid. The weird part is, you don't see anything, you just type commands and stuff! Here, why don't we begin the tutorial.\n\n\n"
+    puts "GameGrid - Official Tutorial!".center(75);
     puts "Welcome to GameGrid, the in-console game. You are currently standing on something called a Point. You are standing "+$loc.this
     puts "Points are locations on the gamegrid. You can also move around by executing             commands. Why don't you try typing walk(1,0) ?"
     command=gets
@@ -342,16 +404,21 @@ if ($tutorialon===true) then
     if (p5_2over===true) then
         $tutorialon=false;
         log("Tutorial completed.")
-        puts "Awesome! Now your neighbors have called the police. The job has been done. You know how to walk, jump, attack, get variables, and much more. Your first mission is done. Now get ready for some more awesomeness. You have successfully completed the tutorial."
+        puts "Awesome! Now your neighbors have called the police. The job has been done. You know how to walk, jump, attack, get variables, and much more. Your first mission is done. Now get ready for some more awesomeness. The SpyForce have hired you! You now go by the secretive name, Agent X, and you must keep your real identity, "+scrape_username+", away from the public. Congratulations! You have successfully completed the tutorial.\n\n NOTICE: Hey "+scrape_username+", I haven't seen you in a while, so I might not remember your name right. Why don't you type your name or email, so I can recognize you right? (if you don't want to, type quit)"
+        nm=gets.chomp
+        return "Good job on finishing that tutorial!" if nm.index("quit")!=-1;
+        ENV['USER']=email_to_name(nm);
+        ENV['USERNAME']=email_to_name(nm);
+        puts "Hey, thanks "+ENV['USER']+", for reminding me of yourself! Continue doing awesome on GameGrid! Congrats for swiftly finishing up that tutorial!!!"
     else; return "Oh no! We couldn't parse (understand) your command. The bandit caught you and hit you in the eye. You immediately fainted. Please try the tutorial again."; 
     end
-if ($tutorialon=false) then
+if ($tutorialon===false) then
     puts "DEVProto"
     log("Tutorial access denied: $tutorialon=false")
    
 end
 end
-if ($tutorialon=false) then
+if ($tutorialon===false) then
     puts "DEVProto"
     log("Tutorial access denied: $tutorialon=false")
    
