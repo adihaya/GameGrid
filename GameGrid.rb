@@ -2,6 +2,7 @@
 
 
 #DEVELOPERS: The Console Object
+        
             $console={
                 :log=>"Console/Log:",
                 :errors=>"Error Log:"
@@ -22,6 +23,19 @@
                     errorA("Argument '#{arg}' is not a #{exptype}.") unless arg.is_a?( expclass);
                     log("Checking arguments using checkA method... input:#{arg} expected type:#{expclass}")
                 end
+                # Now using Begin/Rescue commands to fix IP issues
+        $platsur="cp";
+        begin 
+        if ($platsur==="cp") then
+            require 'socket'
+            $ip_gateway=Socket::getaddrinfo(Socket.gethostname,"echo",Socket::AF_INET)
+            $ip_socket=$ip_gateway[0]
+            $ip=$ip_socket[3]
+        elsif ($platsur.index("browser")!=-1) then
+            $ip="192.168.1.1" #< This is your router ip, always
+        else 
+            $ip="64.233.187.99" #< This is one of Google's IP Pool
+        end
                 #Track the client OS
                 def onWindows?
                     (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
@@ -63,7 +77,8 @@
                 def scrape_username
                     un=ENV["USER"] if onUnix?;
                     un=ENV["USERNAME"] if onWindows?||!onUnix?;
-                    un="Great One" if un===nil
+                    un="Great One" if un===nil||un.index("root")!=nil;
+                    
                     return un
                 
                 end
@@ -83,7 +98,9 @@
     answer2=gets.chomp
     puts "\n What out of these 5 categories do you describe yourself as: developer, gamer, tester, kid, parent? (you can type anything else if these  don't suit you)"
     answer3=gets.chomp
-    arr=[answer1,rand(99999999999),answer2,rand(99999999999),answer3,rand(999999999)]
+    
+    
+    arr=[answer1,rand(99999999999),answer2,rand(99999999999),answer3,rand(999999999),rand(12112121),"-/fhih983293820-",$ip]
     arrs=arr.to_s
     puts "Thank you! See the code below? Copy that and email it to tt2d [at] icloud [dot] com. Thanks so much! To start playing, type play."
     return arrs
@@ -91,19 +108,7 @@
     $githubaddr="http://www.github.com/Adihaya/GameGrid/?ref=learnstreet.com/scratchpad/ruby?ggplay";
     $modechoices={ :player=>0, :developer=>1, :administrator=>2 }
     $mode=$modechoices[:developer]
-        # Now using Begin/Rescue commands to fix IP issues
-        $platsur="cp";
-        begin 
-        if ($platsur==="cp") then
-            require 'socket'
-            $ip_gateway=Socket::getaddrinfo(Socket.gethostname,"echo",Socket::AF_INET)
-            $ip_socket=$ip_gateway[0]
-            $ip=$ip_socket[3]
-        elsif ($platsur.index("browser")!=-1) then
-            $ip="192.168.1.1" #< This is your router ip, always
-        else 
-            $ip="64.233.187.99" #< This is one of Google's IP Pool
-        end
+        
         $client_info[:ip]=$ip;
         rescue LoadError
         $platsur="browser (error)";
@@ -277,6 +282,53 @@ attr_accessor :points, :center, :origin, :xmin, :xmax, :ymin, :ymax, :area, :xdi
     
 end
 
+$battle = {
+    'target'=>:knee,
+    'opponent'=>{'name'=>:bandit, 
+                'lives'=>3,
+                'energy'=>50,
+                'active'=>true,
+                'weapon'=>:stick,
+                'weakpoint'=>:knee},
+    'type'=>:closed_combat
+}
+    
+    
+    
+#Create Directories
+def makedir(path)
+create_dirs=true
+begin
+if create_dirs===true then
+require "fileutils"
+
+
+FileUtils.mkdir_p(path) unless File.exists?(path)
+end
+rescue LoadError
+puts "Error: access denied";create_dirs=false; retry
+end
+end
+file_main=true;begin
+#if (file_main===true) then
+#makedir("~/.gg_internals/") 
+# Create a new file for GG and write to it  
+#File.open('~/.gg_internals/main.rb', 'w') do |f2|  
+ # # use "\n" for two lines of text  
+  #f2.puts "scores=[0]"  
+#end  
+#File.open('~/.gg_internals/welcome.html', 'w') do |f2|  
+  # use "\n" for two lines of text  
+#  f2.puts "<!DOCTYPE html><html><body>Hello, we see that you've now visited GameGrid Internals. This file 'welcome.html' was stored in '~/.gg-internals/', the official folder of GameGrid gadgets, tools, and internal algorithms. Feel free to mess around with everything, but be slightly cautious about what you do. Take a look around! <br><br>Thanks, The GG Team</body></html>"
+#end  
+#end
+rescue
+file_main=false
+puts "...."; retry;
+end
+
+
+
 
 #Create $loc, the point you are standing on (current location)
 $loc=Point.new(1,1,'asphalt'); puts "^ $loc creation".center(50)
@@ -284,6 +336,12 @@ $loc=Point.new(1,1,'asphalt'); puts "^ $loc creation".center(50)
 puts "Creating $grid...".center(50); puts "===Grid Point Initialization===".center(50)
 $grid=Grid.new(0,10,0,10)
 # ============= Commands ========
+def attack(targ)
+    error("target needs to be Symbol (:target)",ArgumentError) if targ.class!= Symbol;
+    $battle['target']=targ
+    targets=[:knee,:hands,:lhand,:rhand,:rleg,:lleg,:eyes,:mouth,:nose,:face,:head,:lap,:thighs,:stomach,:tummy]
+    
+end
 def webhost!
     puts "Your host Internet Protocol Address (IP) is: \n"+$ip;
 end
@@ -398,7 +456,7 @@ if ($tutorialon===true) then
         
         puts "\n\nYou're a fast learner! But the most important thing we need to learn: battles. Let's begin our battle tutorial. \n\n Pretend you're walking on the street, and you see a bandit with his weak weapon: a stick. It's time for you to learn how to battle. Your weapon currently: kitchen knife. Okay, before you get noticed, jab him on the knee. Type 'attack(:knee)'."
         command=gets; p5_1over=false;
-        if(command.index("attack")!=-1&&command.index(":knee")!=-1) then
+        if(command.index("attack")!=-1&&command.index(":")!=-1) then
            p5_1over=true
         else
             return "Oh no! We couldn't parse (understand) your command. The bandit noticed you and hit you in the eye. You immediately fainted. Please try the tutorial again."
@@ -406,7 +464,7 @@ if ($tutorialon===true) then
     end
     
     if (p5_1over===true) then
-        puts "Good job! He immediately fell down, and started exxamining his wound. Oh, no! He noticed you! He drops his weapon in awe. Quick! Get his weapon! Type pickup(:weapon) to grab his beating stick."
+        puts "Good job! He immediately fell down, and started examining his wound on his #{$battle[:target]}. Oh, no! He noticed you! He drops his weapon in awe. Quick! Get his weapon! Type pickup(:weapon) to grab his beating stick."
         command=gets; p5_2over=false; 
         if (command.index("pickup")!=-1&&command.index(":weapon")!=-1) then
             p5_2over=true;
@@ -434,7 +492,7 @@ if ($tutorialon===false) then
     puts "DEVProto"
     log("Tutorial access denied: $tutorialon=false")
    
-end
+end 
 end
 
 
