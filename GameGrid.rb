@@ -222,7 +222,7 @@ class Point
 end
 
 class Grid 
-attr_accessor :points, :center, :origin, :xmin, :xmax, :ymin, :ymax, :area, :xdif, :ydif, :ground; attr_reader :id
+attr_accessor :points, :center, :origin, :xmin, :xmax, :ymin, :ymax, :area, :xdif, :ydif, :ground; attr_reader :id, :visualizer
 @id=rand()
     def [](x,y)
         xypair=[x,y]
@@ -230,7 +230,7 @@ attr_accessor :points, :center, :origin, :xmin, :xmax, :ymin, :ymax, :area, :xdi
     end
         def update
         @area=(@xmax-@xmin+1)*(@ymax-@ymin+1)
-        @xdif=(@xmax-@xmin);@ydif=(@ymax-@ymin)
+        @xdif=(@xmax-@xmin+1);@ydif=(@ymax-@ymin+1)
     end
     def updpoints(gr=@ground)
         puts "Updating points on grid...\n GRID UPDATE NOTICE: Remember, setting x min and max to 0 and 10 will make 11 x-wise rows instead of 10, and setting y min and max to 0 and 10 will make 11 y-wards rows instead of 10!"
@@ -267,7 +267,7 @@ attr_accessor :points, :center, :origin, :xmin, :xmax, :ymin, :ymax, :area, :xdi
         @id=rand()
         @xmin=xmin;@xmax=xmax;@ymin=ymin;@ymax=ymax;
         @area=(@xmax-@xmin+1)*(@ymax-@ymin+1)
-        @xdif=(@xmax-@xmin);@ydif=(@ymax-@ymin)
+        @xdif=(@xmax-@xmin+1);@ydif=(@ymax-@ymin+1)
         @origin=origin
         @center=center
         @points={};
@@ -278,6 +278,26 @@ attr_accessor :points, :center, :origin, :xmin, :xmax, :ymin, :ymax, :area, :xdi
         retry
         end
         puts "Initialized Grid."
+    end
+    def visualize(point=nil)
+    puts "Converting Point elements to Arrays..."
+    plotmarks=point if point.class===Array;
+    plotmarks=[point.x,point,y] if point.class===Point;
+    xdif=@xdif; ydif=@ydif
+    xline=" o "*xdif+"\n"
+    full=xline*ydif
+    xplotters = ""; xplnum=1
+    puts "Measuring plot size... Calculating Areas..."
+    while(xplotters.length/3<=xdif+1)
+    xplotters+=" "+xplnum.to_s+" ";
+    xplnum+=1
+    break if xplnum>=xdif+1;
+    end
+    puts "Processing visualization..."
+    full+=xplotters
+    
+    @visualizer=full
+    puts full
     end
     
 end
@@ -334,7 +354,7 @@ end
 $loc=Point.new(1,1,'asphalt'); puts "^ $loc creation".center(50)
 #Create $grid, the local point grid
 puts "Creating $grid...".center(50); puts "===Grid Point Initialization===".center(50)
-$grid=Grid.new(0,10,0,10)
+$grid=Grid.new(0,9,0,9)
 # ============= Commands ========
 def attack(targ)
     error("target needs to be Symbol (:target)",ArgumentError) if targ.class!= Symbol;
