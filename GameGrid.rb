@@ -300,12 +300,13 @@ attr_accessor :points, :center, :origin, :xmin, :xmax, :ymin, :ymax, :area, :xdi
                 break if (yplnum<=@ymin);
             end
         #full=xline*ydif
-            xplotters = "   "; xplnum=@xmin
+            xplotters = "  "; xplnum=@xmin+1; xplotters="  " if @xmin<0;
         puts "Measuring plot size... Calculating Areas..."
-        while(xplotters.length/3<=xdif+1)
-            xplotters+=" "+xplnum.to_s+" ";
+        while(xplnum<=@xmax+2)
+            curd,curd2="  "; curd=" ".to_s if xplnum<0;
+            xplotters+=curd.to_s+xplnum.to_s+curd2.to_s;
             xplnum+=1
-            break if xplnum>=@xmax;
+            break if xplnum>=@xmax+2;
         end
         puts "Processing visualization..."
             full+="   "+"___"*(xdif)+"\n";full+=xplotters
