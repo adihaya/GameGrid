@@ -228,12 +228,16 @@ attr_accessor :points, :center, :origin, :xmin, :xmax, :ymin, :ymax, :area, :xdi
         xypair=[x,y]
         return @points[xypair]
     end
-        def update
+     def []=(x,y,to) #Make sure to actually syntax like this: [x,y]=to
+        xypair=[x,y]
+        @points[xypair]=to;
+    end
+    def update
         @area=(@xmax-@xmin+1)*(@ymax-@ymin+1)
         @xdif=(@xmax-@xmin+1);@ydif=(@ymax-@ymin+1)
     end
     def updpoints(gr=@ground)
-        puts "Updating points on grid...\n GRID UPDATE NOTICE: Remember, setting x min and max to 0 and 10 will make 11 x-wise rows instead of 10, and setting y min and max to 0 and 10 will make 11 y-wards rows instead of 10!"
+        puts "Updating points on grid...\n GRID UPDATE NOTICE: You are using updpoints, the latest version of the official Grid Point Updater!"
         update()
         begin
         keepsetting1=true; xnum=@xmin; ynum=@ymin; xmax=@xmax; ymax=@ymax; xnumy=@xmin; 
@@ -264,6 +268,7 @@ attr_accessor :points, :center, :origin, :xmin, :xmax, :ymin, :ymax, :area, :xdi
     end
     def initialize(xmin,xmax,ymin,ymax,origin=[0,0],center=[0,0],ground="asphalt")
         begin
+        xmax-=1; ymax-=1;
         @id=rand()
         @xmin=xmin;@xmax=xmax;@ymin=ymin;@ymax=ymax;
         @area=(@xmax-@xmin+1)*(@ymax-@ymin+1)
@@ -354,7 +359,7 @@ end
 $loc=Point.new(1,1,'asphalt'); puts "^ $loc creation".center(50)
 #Create $grid, the local point grid
 puts "Creating $grid...".center(50); puts "===Grid Point Initialization===".center(50)
-$grid=Grid.new(0,9,0,9)
+$grid=Grid.new(0,10,0,10)
 # ============= Commands ========
 def attack(targ)
     error("target needs to be Symbol (:target)",ArgumentError) if targ.class!= Symbol;
