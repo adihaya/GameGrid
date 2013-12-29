@@ -22,12 +22,18 @@ puts "O: page1.css"
 File.open("page.css", "r").each_line do |line|
   $pcss+=line
 end
+$lgif=""
+puts "O: loader.gif"
+File.open("loadergif.txt", "r").each_line do |line|
+  $lgif+=line
+end
 puts "Files gripped. "
 
 
 require 'fileutils'; puts "Loaded FileUtilities. "
 
 File.open("/Applications/GameGrid.rb", 'a+') {|f| f.write($ggrb) }; puts "Files pushed to /Applications/GameGrid.rb";
+File.open("/Applications/loader.gif", 'a+') {|f| f.write($lgif) }; puts "Images pushed to /Applications/GameGrid.rb";
 File.open("/Applications/GameGrid Updater.html", 'a+') {|f| f.write($dlht) }; puts "Updates pushed to /Applications/GameGrid Updater.html";
 
 $gdirname = File.dirname("/Applications/Welcome - assets/assets"); puts "Assets folder creation initiated...."
