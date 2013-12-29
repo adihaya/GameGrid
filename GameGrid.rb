@@ -277,6 +277,7 @@ attr_accessor :points, :center, :origin, :xmin, :xmax, :ymin, :ymax, :area, :xdi
         @center=center
         @points={};
         @ground=ground
+        @visualizer="run visualize method on this grid to set visualizer"; @oldvisualizers=[]
         updpoints()
         rescue
         xmin=0,xmax=0,ymin=0,ymax=0,ground="asphalt"
@@ -285,24 +286,30 @@ attr_accessor :points, :center, :origin, :xmin, :xmax, :ymin, :ymax, :area, :xdi
         puts "Initialized Grid."
     end
     def visualize(point=nil)
-    puts "Converting Point elements to Arrays..."
-    plotmarks=point if point.class===Array;
-    plotmarks=[point.x,point,y] if point.class===Point;
-    xdif=@xdif; ydif=@ydif
-    xline=" o "*xdif+"\n"
-    full=xline*ydif
-    xplotters = ""; xplnum=1
-    puts "Measuring plot size... Calculating Areas..."
-    while(xplotters.length/3<=xdif+1)
-    xplotters+=" "+xplnum.to_s+" ";
-    xplnum+=1
-    break if xplnum>=xdif+1;
-    end
-    puts "Processing visualization..."
-    full+=xplotters
-    
-    @visualizer=full
-    puts full
+        puts "Converting Point elements to Arrays..."
+        plotmarks=point if point.class===Array;
+        plotmarks=[point.x,point,y] if point.class===Point;
+            xdif=@xdif; ydif=@ydif
+            xline="|"+" o "*xdif+"|\n"
+            yplnum=@ymax+1; full = "   "+"___"*(xdif)+"\n"
+            while(yplnum>@ymin)
+                curd=""
+                curd=" " if (yplnum<10&&yplnum>(-1))
+                full+=(yplnum.to_s+curd+xline); yplnum-=1;
+                break if (yplnum<=@ymin);
+            end
+        #full=xline*ydif
+            xplotters = "   "; xplnum=1
+        puts "Measuring plot size... Calculating Areas..."
+        while(xplotters.length/3<=xdif+1)
+            xplotters+=" "+xplnum.to_s+" ";
+            xplnum+=1
+            break if xplnum>=xdif+1;
+        end
+        puts "Processing visualization..."
+            full+="   "+"___"*(xdif)+"\n";full+=xplotters
+        @visualizer=full; @oldvisualizers.push(full)
+                        puts full
     end
     
 end
