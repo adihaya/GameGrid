@@ -90,6 +90,7 @@
         :username=>scrape_username,
         :syshash=>ENV
     }
+    $begsurvdone=false;
     def beginning_survey
     puts "\n\n\n\n Hey "+scrape_username+", I see you have properly installed GameGrid! Don't just leave the GameGrid folder in "+ENV["PWD"]+"(downloads), why don't you move it to your Apps folder in /Applications or "+ENV["HOME"]+" for better access? Also, why don't you take this itty-bitty, 3-question survey before you start the game? Remember, we are testing for bugs, and this would really help. When the survey is finished, it will formulate some lettered code. Copy that and email it to tt2d [at] icloud [dot] com. Ready? The survey has begun!"
     puts "\n Where did you learn about GameGrid? (aka. Google Search, GitHub, flyer, friend told me, etc)"
@@ -102,7 +103,7 @@
     
     arr=[answer1,rand(99999999999),answer2,rand(99999999999),answer3,rand(999999999),rand(12112121),"-/fhih983293820-",$ip]
     arrs=arr.to_s
-    puts "Thank you! See the code below? Copy that and email it to tt2d [at] icloud [dot] com. Thanks so much! To start playing, type play."
+    puts "Thank you! See the code below? Copy that and email it to tt2d [at] icloud [dot] com. Thanks so much! To start playing, type play."; begsurvdone=true; 
     return arrs
     end
     $githubaddr="http://www.github.com/Adihaya/GameGrid/?ref=learnstreet.com/scratchpad/ruby?ggplay";
@@ -299,12 +300,12 @@ attr_accessor :points, :center, :origin, :xmin, :xmax, :ymin, :ymax, :area, :xdi
                 break if (yplnum<=@ymin);
             end
         #full=xline*ydif
-            xplotters = "   "; xplnum=1
+            xplotters = "   "; xplnum=@xmin
         puts "Measuring plot size... Calculating Areas..."
         while(xplotters.length/3<=xdif+1)
             xplotters+=" "+xplnum.to_s+" ";
             xplnum+=1
-            break if xplnum>=xdif+1;
+            break if xplnum>=@xmax;
         end
         puts "Processing visualization..."
             full+="   "+"___"*(xdif)+"\n";full+=xplotters
@@ -530,4 +531,4 @@ end
 
 
 
-beginning_survey()
+beginning_survey() unless $begsurvdone===true;
