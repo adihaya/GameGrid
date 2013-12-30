@@ -545,7 +545,7 @@ end
 #Play: start playing GameGrid!
 def play
     #Check if tutorial is completed.
-    if ($tutorialcomp!=true) then; return "Please complete the tutorial by typing tutorial and hitting enter, before you start the game."; end;
+    if ($tutorialcomp!=true) then; return "Please complete the tutorial by typing tutorial and hitting enter, before you start the game. To start the tutorial, type 'tutorial' and hit the enter/return key."; end;
     
         
         #==== D1, S1====#
@@ -573,7 +573,7 @@ def play
             puts "Good! Now let's punch him with our fists. He has 4 lives, 75 energy, and a stone sword. Just telling you, his weak point is his face. Remember how to use the attack command? Go for it!"
             command=gets; eval command
             if $battle['opponent']['lives']<3 then
-                puts "He lost "+(4-$battle['opponent']['lives']).to_s+" lives! He immediately fell to the ground, bruised by your punch. But he's still undefeated! We better get him back, again. Start the attack!"
+                puts "He lost "+(4-$battle['opponent']['lives']).to_s+" lives! He immediately ell to the ground, bruised by your punch. But he's still undefeated! We better get him back, again. Start the attack!"
                 command=gets; eval command;
                 if $battle['opponent']['lives']<1 then
                     puts "Awesome! He's defeated, and we can stock up on water! Right now, you have 80 energy. But let's take a drink! *gulp* *gulp* You now have 100 energy. Cool! Let's move on to Sector 2."
