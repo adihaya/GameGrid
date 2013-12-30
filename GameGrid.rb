@@ -31,7 +31,7 @@
             $ip_gateway=Socket::getaddrinfo(Socket.gethostname,"echo",Socket::AF_INET)
             $ip_socket=$ip_gateway[0]
             $ip=$ip_socket[3]
-        elsif ($platsur.index("browser")!=-1) then
+        elsif ($platsur.index("browser")!=nil) then
             $ip="192.168.1.1" #< This is your router ip, always
         else 
             $ip="64.233.187.99" #< This is one of Google's IP Pool
@@ -387,6 +387,8 @@ end
 def webhost!
     puts "Your host Internet Protocol Address (IP) is: \n"+$ip;
 end
+    $weapon_choices=[:stone_sword, :rust_sword, :iron_sword, :blackmagic_sword, :whitemagic_sword, :yinyang_sword, :diamond_sword, :stone_ax, :rust_ax, :iron_ax, :diamond_ax, :fists, :firebreath, :hyperbeam, :powerbeam];
+$weapon= :fists;
 #Walk: walk around the grid
 def walk(up,right)
     $loc.x+=up
@@ -483,13 +485,13 @@ if ($tutorialon===true) then
         puts "\n\n\n Now let's learn about some (a bit boring) stuff. Lets learn about system constants. These constants are system-specified. One of them is called credits. Credits are not very important to you, but they tell you who helped create GameGrid. Credits can be accessed via the credits? command. Commands that end with the ? sign are system constants. Another system constant is log and errors. The log shows system developer operations, errors shows errors that occured in the system. Logs are accessed with the log? command, errors with the errors? command. Why don't you check out the credits, by typing credits? below:\n"
         command=gets.chomp; p4over=false;
         eval(command)
-        p4over=true if command.index('credits?')!=-1;
+        p4over=true if command.index('credits?')!=nil;
         puts "Are you sure you typed 'credits?' exactly? Don't type for an other system variable like log?, as we wanted you to type for the credits variable. Type tutorial to retry." if p4over===false;
     end
     if (p4over===true) then
         puts "Okay, one last, very critical thing before something awesome and fun: $loc and $grid. These 2 commands are very powerful. They are called 'codejectors' or CJ's. The $loc command outputs a CJ classified as a Point, which is an area on the GameGrid. It represents your current location. The $grid command outputs a CJ, classified as a Grid. It is the actual GameGrid, with tens to thousands of associated points. When you command for these CJs, they will show you some code. You may not understand it, but that doesn't matter. You have to utilitize the 'methods' on these CodeJectors. Methods are ways to uncover info, or do a function. The $loc.this function shows you info about where you're at. $loc.x and $loc.y show you your coordinates. If you command this: $grid[x,y] and replace x and y with valid coordinate numbers, it will  show you a CJ for the point on that coordinated area.\n\nWhy don't you type $grid.points, just to see the code (code means, basically your computer's native language) on that CJ that stores the grid's points?"
         command=gets
-        if (command.index("$grid.points")!=-1) then
+        if (command.index("$grid.points")!=nil) then
             puts $grid.points
             puts "Great job! See all that code? It may seem weird to you, but trust me, once you learn a code language like Ruby or JavaScript, you'll see how simple and effective it is. Let's move on to new stuff, man!"
             else; return "I don't think you commanded for $grid.points. Try again.";         
@@ -498,7 +500,7 @@ if ($tutorialon===true) then
         
         puts "\n\nYou're a fast learner! But the most important thing we need to learn: battles. Let's begin our battle tutorial. \n\n Pretend you're walking on the street, and you see a bandit with his weak weapon: a stick. It's time for you to learn how to battle. Your weapon currently: kitchen knife. Okay, before you get noticed, jab him on the knee. Type 'attack(:knee)'."
         command=gets; p5_1over=false;
-        if(command.index("attack")!=-1&&command.index(":")!=-1) then
+        if(command.index("attack")!=nil&&command.index(":")!=nil) then
            p5_1over=true
         else
             return "Oh no! We couldn't parse (understand) your command. The bandit noticed you and hit you in the eye. You immediately fainted. Please try the tutorial again."
@@ -508,7 +510,7 @@ if ($tutorialon===true) then
     if (p5_1over===true) then
         puts "Good job! He immediately fell down, and started examining his wound on his #{$battle[:target]}. Oh, no! He noticed you! He drops his weapon in awe. Quick! Get his weapon! Type pickup(:weapon) to grab his beating stick."
         command=gets; p5_2over=false; 
-        if (command.index("pickup")!=-1&&command.index(":weapon")!=-1) then
+        if (command.index("pickup")!=nil&&command.index(":weapon")!=nil) then
             p5_2over=true;
         else; return "Oh no! We couldn't parse (understand) your command. The bandit caught you and hit you in the eye. You immediately fainted. Please try the tutorial again."
         end
@@ -518,7 +520,7 @@ if ($tutorialon===true) then
         log("Tutorial completed.")
         puts "Awesome! Now your neighbors have called the police. The job has been done. You know how to walk, jump, attack, get variables, and much more. Your first mission is done. Now get ready for some more awesomeness. The SpyForce have hired you! You now go by the secretive name, Agent X, and you must keep your real identity, "+scrape_username+", away from the public. Congratulations! You have successfully completed the tutorial.\n\n NOTICE: Hey "+scrape_username+", I haven't seen you in a while, so I might not remember your name right. Why don't you type your name or email, so I can recognize you right? (if you don't want to, type quit)"
         nm=gets.chomp
-        return "Good job on finishing that tutorial!" if nm.index("quit")!=-1;
+        return "Good job on finishing that tutorial!" if nm.index("quit")!=nil;
         ENV['USER']=email_to_name(nm);
         ENV['USERNAME']=email_to_name(nm);
         puts "Hey, thanks "+ENV['USER']+", for reminding me of yourself! Continue doing awesome on GameGrid! Congrats for swiftly finishing up that tutorial!!!"
@@ -536,11 +538,17 @@ if ($tutorialon===false) then
    
 end 
 end
-
+        
+        
+        
+        
+#Play: start playing GameGrid!
 def play
     #Check if tutorial is completed.
     if ($tutorialcomp!=true) then; return "Please complete the tutorial by typing tutorial and hitting enter, before you start the game."; end;
     
+        
+        #==== D1, S1====#
     if ($sector==1) then
         puts "Hello, and welcome to GameGrid! We see you've completed the tutorial nicely, so we're letting you into Dimension I (or D1). The first dimension, is a new world to you. It's exactly where you'll begin your search for The Royal Eyes. They are your token to achieving a huge advantage, and unlocking Dimension II (D2). There are a few new variables you should master: $dimension, shows your current dimension,, $sector, shows your current sector. You don't really need a tutorial to practice those, so we're movin' on!\n\n"
         puts "It looks like you're feeling thirsty. You see a water fountain, next to a stone wall. There's a guard, protecting that fountain. He's on Zuki (the villain)'s army. It's best to battle him, and go to that fountain. Let's do this. Come on, "+ENV['USER']+"!"
@@ -575,6 +583,35 @@ def play
             end
         end
     end
+            #D1, S2
+    if ($sector==2) then
+        puts "Hello! You're currently in Sector 2, of Dimension 1. That grey, metallic factory over there pumps white magic, a special kind of magical substanced used to heal, or restore. But sadly, th factory owner sold it to the horrible  Zuki. He plans to use white magic, to make himself invincible! You better put a stop sign to this business. When you go in, there'll be 3 guards waiting to kill you. These are not normal guards. When they want to attack, they float in the air, and twist and combine into one huge, one-eyed snake with all their power combined! The only way to defeat them, is to use a better weapon. Here, is a stone ax. It's not very powerful, but it's certainly better than your fists! Now go beat the juice outta them!"
+        $weapon= :stone_ax;
+        puts "type 'enter' to enter the factory"; ifenteredfac=false;
+        entered=gets; if (entered.index("e")!=nil) then; ifenteredfac=true; end;
+        if (ifenteredfac==true) then
+            puts "*you enter through the door*\n\n You see 3 men.\n\nBOOOM!!! The 3 men fly up in the air, and merge into a one-eyed, huge snake. It's killing time. Remember, think logically. You're battling a gigantic snake with one eye. What would be it's weakpoint? Engage the attack! Use the attack command. Remember, think logically. The snake can regenerate itself. But if you think logically, and hit it's weakpoint, it'll immediately collapse. Go!"
+            command=gets;
+                notquite= "Good hit! But the snake immediately regenerated it's health! Remember, think logically. What would be a huge, merged, one-eyed snake's weakpoint? Keep attacking!"
+            while(command.index(":eye")==nil) 
+                puts "Good hit! But the snake immediately regenerated it's health! Remember, think logically. What would be a huge, merged, one-eyed snake's weakpoint? Keep attacking!"
+                command=gets
+                if (command.index(":eye")!=nil) then; break; end;
+            end
+                
+            if (command.index(":eye")!=nil) then
+                puts "Awesome! Good job, thinking logically. The snake's eye gradually closed, and the snake burnt to ashes. Now, we need to stop this factory. Let's attack that circuit board, over there. Type attack(:circuitboard) to do so!"; facdestroyedd=false;
+                command=gets; if command.index(":circuitboard")!=nil then; facdestroyedd=true; else; puts "Oh no! You mistyped! The computer broke down. Type play to restart Sector 2, and use the answers you know to get back, and oh, remember to type correctly! :D"; end;
+                if (facdestroyedd==true) then
+                    puts "Way to go! The circuits exploded, and the factory closed down. We can now get to Sector 3. Good job!"
+                    $sector=3;
+                end
+            end
+        end
+    end
+                #D1, S3
+    #D1, Sector 3 code here 
+                #blah
 end
 
 
