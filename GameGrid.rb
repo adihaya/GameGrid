@@ -82,6 +82,7 @@
                     return un
                 
                 end
+            
 #===== Variable Declarations ===
     #GG Code Variables
     $client_info={
@@ -120,6 +121,7 @@
     # Important Variables
         $lives=5; $energy=100; $altitude=10;
         $tutorialon=true;
+        $dimension=1; $sector=1;
     #System Constants
         $cursession=1; $playid=rand(9^5);  
         $credits="Game created completely by Adihaya. Help in testing comes from VasantVR.\n See out GitHub address for all our GameGrid code:\n'"+$githubaddr+"'"
@@ -374,7 +376,13 @@ def attack(targ)
     error("target needs to be Symbol (:target)",ArgumentError) if targ.class!= Symbol;
     $battle['target']=targ
     targets=[:knee,:hands,:lhand,:rhand,:rleg,:lleg,:eyes,:mouth,:nose,:face,:head,:lap,:thighs,:stomach,:tummy]
-    
+    if targ==$battle['opponent']['weakpoint'] then
+        $battle['opponent']['lives']-=3;
+    else
+        $battle['opponent']['lives']-=2;
+    end
+    puts "Attacked the #{$battle['opponent']['name'].to_s}'s #{targ.to_s}!"
+        
 end
 def webhost!
     puts "Your host Internet Protocol Address (IP) is: \n"+$ip;
@@ -407,7 +415,7 @@ end
 def altitude!
 puts $altitude
 end
-
+$tutorialcomp=false;
 
 
 #SystemConstant Access commands
@@ -431,7 +439,7 @@ end
 
 #============== END Commands =====
 #Play: start the game tutorial
-def play 
+def tutorial
 if ($tutorialon===true) then
     $loc.x=1; $loc.y=1; # Reset current loc
     puts "Hello, my friend "+$client_info[:username]+", I've been waiting to show you this very cool computer video game called GameGrid. The weird part is, you don't see anything, you just type commands and stuff! Here, why don't we begin the tutorial.\n\n\n"
@@ -443,7 +451,7 @@ if ($tutorialon===true) then
         if $loc.x===2 then
             p1over=true;puts "\n Congrats! Did you see that? You moved up on the GameGrid, by 1 point. Using the walk(up,right) command lets your player abstractly walk the grid."; 
         else
-            p1over=false; return "Are you sure you typed walk(1,0) exactly? I don't think so. Remember to type EXACTLY what is shown. Type play to retry the tutorial."; 
+            p1over=false; return "Are you sure you typed walk(1,0) exactly? I don't think so. Remember to type EXACTLY what is shown. Type tutorial to retry the tutorial."; 
         end
         
     if (p1over===true) then
@@ -476,7 +484,7 @@ if ($tutorialon===true) then
         command=gets.chomp; p4over=false;
         eval(command)
         p4over=true if command.index('credits?')!=-1;
-        puts "Are you sure you typed 'credits?' exactly? Don't type for an other system variable like log?, as we wanted you to type for the credits variable. Type play to retry." if p4over===false;
+        puts "Are you sure you typed 'credits?' exactly? Don't type for an other system variable like log?, as we wanted you to type for the credits variable. Type tutorial to retry." if p4over===false;
     end
     if (p4over===true) then
         puts "Okay, one last, very critical thing before something awesome and fun: $loc and $grid. These 2 commands are very powerful. They are called 'codejectors' or CJ's. The $loc command outputs a CJ classified as a Point, which is an area on the GameGrid. It represents your current location. The $grid command outputs a CJ, classified as a Grid. It is the actual GameGrid, with tens to thousands of associated points. When you command for these CJs, they will show you some code. You may not understand it, but that doesn't matter. You have to utilitize the 'methods' on these CodeJectors. Methods are ways to uncover info, or do a function. The $loc.this function shows you info about where you're at. $loc.x and $loc.y show you your coordinates. If you command this: $grid[x,y] and replace x and y with valid coordinate numbers, it will  show you a CJ for the point on that coordinated area.\n\nWhy don't you type $grid.points, just to see the code (code means, basically your computer's native language) on that CJ that stores the grid's points?"
@@ -506,7 +514,7 @@ if ($tutorialon===true) then
         end
     end
     if (p5_2over===true) then
-        $tutorialon=false;
+        $tutorialon=false; $tutorialcomp=true;
         log("Tutorial completed.")
         puts "Awesome! Now your neighbors have called the police. The job has been done. You know how to walk, jump, attack, get variables, and much more. Your first mission is done. Now get ready for some more awesomeness. The SpyForce have hired you! You now go by the secretive name, Agent X, and you must keep your real identity, "+scrape_username+", away from the public. Congratulations! You have successfully completed the tutorial.\n\n NOTICE: Hey "+scrape_username+", I haven't seen you in a while, so I might not remember your name right. Why don't you type your name or email, so I can recognize you right? (if you don't want to, type quit)"
         nm=gets.chomp
@@ -529,6 +537,45 @@ if ($tutorialon===false) then
 end 
 end
 
+def play
+    #Check if tutorial is completed.
+    if ($tutorialcomp!=true) then; return "Please complete the tutorial by typing tutorial and hitting enter, before you start the game."; end;
+    
+    if ($sector==1) then
+        puts "Hello, and welcome to GameGrid! We see you've completed the tutorial nicely, so we're letting you into Dimension I (or D1). The first dimension, is a new world to you. It's exactly where you'll begin your search for The Royal Eyes. They are your token to achieving a huge advantage, and unlocking Dimension II (D2). There are a few new variables you should master: $dimension, shows your current dimension,, $sector, shows your current sector. You don't really need a tutorial to practice those, so we're movin' on!\n\n"
+        puts "It looks like you're feeling thirsty. You see a water fountain, next to a stone wall. There's a guard, protecting that fountain. He's on Zuki (the villain)'s army. It's best to battle him, and go to that fountain. Let's do this. Come on, "+ENV['USER']+"!"
+        $loc.x=1; $loc.y=1;
+        #Battle Setup
+        $battle = {
+            'target'=>:knee,
+            'opponent'=>{'name'=>:guard, 
+                'lives'=>4,
+                'energy'=>75,
+                'active'=>true,
+                'weapon'=>:stone_sword,
+                'weakpoint'=>:face},
+            'type'=>:close_combat
+        }
+        puts "\n\n Okay, we need to slowly approach him from the sides. When you do an attack while you weren't noticed, it has slightly greater effects. So make sure to walk, only up to 2 steps at a time, or else, he'll hear us. The guard stands at 4,2. Let's get him! But go slow. Remember how to walk? Start walking!"
+        while($loc.x!=4||$loc.y!=2)
+            command=gets; eval(command); 
+            break if $loc.x==4&&$loc.y==2
+        end
+        if ($loc.x==4&&$loc.y==2)
+            puts "Good! Now let's punch him with our fists. He has 4 lives, 75 energy, and a stone sword. Just telling you, his weak point is his face. Remember how to use the attack command? Go for it!"
+            command=gets; eval command
+            if $battle['opponent']['lives']<3 then
+                puts "He lost "+(4-$battle['opponent']['lives']).to_s+" lives! He immediately ell to the ground, bruised by your punch. But he's still undefeated! We better get him back, again. Start the attack!"
+                command=gets; eval command;
+                if $battle['opponent']['lives']<1 then
+                    puts "Awesome! He's defeated, and we can stock up on water! Right now, you have 80 energy. But let's take a drink! *gulp* *gulp* You now have 100 energy. Cool! Let's move on to Sector 2."
+                    $sector=2;
+                    puts "Welcome to Sector 2, of the first dimension."
+                end
+            end
+        end
+    end
+end
 
 
 
