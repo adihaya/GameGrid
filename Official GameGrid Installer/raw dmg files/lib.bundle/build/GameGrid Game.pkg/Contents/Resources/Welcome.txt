@@ -1,0 +1,1 @@
+Welcome to the GameGrid Installer. GameGrid is a game, where you navigate a grid, battle villains, and unlock your true goal, The Royal Eyes, by using commands. See the official website: http://www.adihaya.github.io/GameGrid
