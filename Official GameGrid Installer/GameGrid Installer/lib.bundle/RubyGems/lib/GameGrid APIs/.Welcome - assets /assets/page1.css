@@ -1,0 +1,178 @@
+/* This code is only meant for previewing your Reflow design. */
+.primaryContainer {
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 100%;
+    width: 90%;
+}
+
+#text {
+    float: left;
+    font-size: 30px;
+    width: 360px;
+    height: 20px;
+    text-align: center;
+    font-weight: 200;
+    line-height: 1em;
+    word-wrap: break-word;
+    margin-left: 30.766943%;
+    margin-top: 46px;
+    clear: none;
+    min-height: 0px;
+    font-style: normal;
+    color: rgb(0, 93, 255);
+    text-decoration: none;
+    text-transform: capitalize;
+}
+
+body {
+    background-color: rgb(88, 208, 88);
+    font-family: nixie-one;
+    color: rgb(2, 6, 255);
+}
+
+#text1 {
+    float: left;
+    font-size: 1em;
+    width: 93.386371%;
+    height: auto;
+    text-align: justify;
+    font-weight: normal;
+    line-height: 1em;
+    word-wrap: break-word;
+    margin-left: 6.613629%;
+    margin-top: 40px;
+    clear: both;
+    min-height: 0px;
+    border-style: none;
+    border-width: 1px;
+}
+
+#textspan {
+    float: none;
+    font-size: 1em;
+    line-height: 1em;
+    font-family: josefin-slab;
+}
+
+#textspan3 {
+    float: none;
+    font-size: 1em;
+    line-height: 1em;
+    font-family: courier-prime;
+}
+
+#textspan2 {
+    float: none;
+    font-size: 1em;
+    line-height: 1em;
+    font-family: josefin-slab;
+}
+
+#textspan1 {
+    float: none;
+    font-size: 1em;
+    line-height: 1em;
+    font-family: courier-prime;
+}
+
+#textspan4 {
+    float: none;
+    font-size: 1em;
+    line-height: 1em;
+    font-family: courier-prime;
+}
+
+#text2 {
+    float: left;
+    font-size: 1.4em;
+    width: auto;
+    height: auto;
+    text-align: left;
+    font-weight: normal;
+    line-height: 1em;
+    word-wrap: break-word;
+    margin-left: -73.047325%;
+    margin-top: 233px;
+    clear: none;
+    min-height: 0px;
+    border-style: dashed;
+    border-width: 1px;
+}
+
+#text4 {
+    float: left;
+    font-size: 1em;
+    width: 93.386371%;
+    height: auto;
+    text-align: justify;
+    font-weight: normal;
+    line-height: 1em;
+    word-wrap: break-word;
+    margin-left: 6.613629%;
+    margin-top: 0px;
+    clear: both;
+    min-height: 0px;
+}
+
+#text3 {
+    float: left;
+    font-size: 1em;
+    width: auto;
+    height: auto;
+    text-align: left;
+    font-weight: normal;
+    line-height: 1em;
+    word-wrap: break-word;
+    margin-left: 41.464367%;
+    margin-top: 0px;
+    clear: both;
+    min-height: 0px;
+}
+
+#text5 {
+    float: left;
+    font-size: 1em;
+    width: auto;
+    height: auto;
+    text-align: justify;
+    font-weight: normal;
+    line-height: 1em;
+    word-wrap: break-word;
+    margin-left: 6.613629%;
+    margin-top: 34px;
+    clear: both;
+    min-height: 0px;
+}
+
+#text6 {
+    float: left;
+    font-size: 1em;
+    width: auto;
+    height: auto;
+    text-align: left;
+    font-weight: normal;
+    line-height: 1em;
+    word-wrap: break-word;
+    margin-left: 6.613629%;
+    margin-top: 31px;
+    clear: both;
+    min-height: 0px;
+}
+
+#text7 {
+    float: left;
+    font-size: 1em;
+    width: auto;
+    height: auto;
+    text-align: left;
+    font-weight: normal;
+    line-height: 1em;
+    word-wrap: break-word;
+    margin-left: 21.924607%;
+    margin-top: 104px;
+    clear: both;
+    min-height: 0px;
+}
+
