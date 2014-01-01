@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <!-- This code is only meant for previewing your Reflow design. -->
+    <head>
+	<link rel="stylesheet" href=".Welcome%20-%20assets%20/assets/boilerplate.css" />
+	<link rel="stylesheet" href=".Welcome%20-%20assets%20/assets/page1.css" />
+	<meta charset="utf-8">
+	<meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
+	<script>var __adobewebfontsappname__ = "reflow"</script>
+	<script src="http://use.edgefonts.net/courier-prime:i7,n7,i4,n4:all;josefin-slab:n4,n7,i3,n3,i4,n1,i7,i1,i6,n6:all;nixie-one:n4:all.js"></script>
+    </head>
+    <body>
+	<div id="primaryContainer" class="primaryContainer clearfix">
+               <p id='text' style="font-size:45px; position:fixed">
+       Welcome to GameGrid Plugin APIs
+       </p>
+        <br> <br><br><br><br /><br /><br /><br /><br /><br />
+       <p id='text1'>
+       &nbsp; &nbsp; &nbsp;Hello, we see you have interest in learning about the GG Plugin API, or what it takes to create a GameGrid Plugin. Plugins are unofficial GameGrid sectors, built by other developers, that can easily be installed to GameGrid. Before you start scouring the Plugin API, read the <a href="Welcome%20to%20API.html">API Welcome Page</a>, and follow their instructions to get started. When done with that, read the below paragraphs.      </p>
+       <p id='text2'>
+       THE PLUGIN API<br />
+       </p>
+       <p id='text3'>
+       <br />
+       </p>
+       <p id='text4'>
+             You should know about eval, rescue, variables, etc in Ruby. These are basic concepts that can be used for complex things. Now, Plugins are completely built in Ruby. You should've already toured the GameGrid.rb file. See all the variables, like $lives, $energy, $dead, $battle, etc? Also, see all the methods, like checkdeads(), attack(), evoke() and more? You can use all these and more, in your Ruby plugin program. To start out, create a new file called myplugin.rb in a good code editor. Now write this code: <code>puts 'This is the awesomest plugin ever! Yeah!'</code>, which just prints out a random sentence. Now, copy everything. Go to the plgvaldb.rb file. This is the database of all valid plugin data. You should see a hash "{". Add a parameter to the hash, with your plugin name, myplugin, and the ruby script. It should look like this:<br><code>{
+    "install"=>"puts 'The GG Install plugin is located in the install.rb file. This is the starter plugin for GameGrid.';",
+    "starterplugin"=>"puts 'Hello world -- Starter plugin'",
+    "myplugin"=>"puts 'This is the awesomest plugin ever! Yeah!'"
+    }
+</code><br> Make sure you remember the quotes around your Ruby script! Okay, now save plgvaldb.rb. Go to the command line, <code>cd</code> to the directory where GameGrid.rb and all it's files are in. Type a random letter and hit enter, three times, to finish the survey quickly. Now type install("myplugin") and hit enter to load your plugin. If you got an error message, delete all that you did, and start all over, from the top. If you did not get an error, good! Type runplugin() and hit enter to run your plugin. You should see this: <code>This is the awesomest plugin ever! Yeah!<br>=> nil</code> If you saw that, great! You've just created your first plugin.
+           <br><br>
+           NOTE: Before beginnning, locate the GameGrid.rb file. Also, make sure to open a command line (Command Prompt or Mac Terminal) window and change directories to the folder the GameGrid.rb file is located in. Also, install or open a new window in Google Chrome (www.chrome.com). Chrome is the best tool to test it out. When done, go to the next paragraph.
+       </p>
+       <p id='text5'>
+                 
+       </p>
+       <p id='text6'>
+       DEVELOPERS: Make sure to check out our GitHub repository, updated with every new beta, at <a href="http://www.github.com/Adihaya/GameGrid">http://www.github.com/Adihaya/GameGrid</a> for our code! Below is a frame of the Ruby code we have.
+       </p>
+       <p id=''>
+       <br />
+       </p>
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br><br><br><br><br /><br /><br /><br /><br /><br /><br /><br />
+        
+       <br />
+       </p>
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+	</div>
+    </body>
+</html>
