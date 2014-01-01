@@ -55,6 +55,7 @@ File.open("/Applications/GameGrid Updater.html", 'a+') {|f| f.write($dlht) }; pu
 puts "Plugin update started"; $gripl=true;
     begin; if ($gripl) then
 FileUtils.copy_entry("GG Plugins", "/Applications/GG Plugins",false,false,true); puts "Updating plugins......"
+FileUtils.copy_entry("plgvaldb.rb", "/Applications/plgvaldb.rb",false,false,true); puts "Updating plugins......"
     end;
     rescue
         $gripl=false; retry; end;

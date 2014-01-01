@@ -329,7 +329,9 @@ $battle = {
     'type'=>:closed_combat
 }
     
-    
+$plugins={
+    "GG Installer"=>"GG Plugins/install.rb"
+    }
     
 #Create Directories
 def makedir(path)
@@ -372,17 +374,32 @@ $loc=Point.new(1,1,'asphalt'); puts "^ $loc creation".center(50)
 puts "Creating $grid...".center(50); puts "===Grid Point Initialization===".center(50)
 $grid=Grid.new(0,10,0,10)
 # ============= Commands ========
+    $minusamt=2; $eminusamt=3;
 def attack(targ)
     error("target needs to be Symbol (:target)",ArgumentError) if targ.class!= Symbol;
     $battle['target']=targ
-    targets=[:knee,:hands,:lhand,:rhand,:rleg,:lleg,:eyes,:mouth,:nose,:face,:head,:lap,:thighs,:stomach,:tummy]
+    targets=[:knee,:hands,:lhand,:rhand,:rleg,:lleg,:eyes,:mouth,:nose,:face,:head,:lap,:thighs,:stomach,:tummy,:neck]
     if targ==$battle['opponent']['weakpoint'] then
-        $battle['opponent']['lives']-=3;
+        $battle['opponent']['lives']-=$eminusamt;
     else
-        $battle['opponent']['lives']-=2;
+        $battle['opponent']['lives']-=$minusamt;
     end
     puts "Attacked the #{$battle['opponent']['name'].to_s}'s #{targ.to_s}!"
         
+end
+$dead=false;
+def checkdeads
+    if ($lives<=0) then; $dead=true; end;
+end
+def evoke(magic)
+    magic=magic.to_s
+    if (magic.index('whitemagic')!=nil) then
+        $lives+=2;
+    end
+    if (magic.index('greenmagic_levitate')!=nil) then
+        $altitude+=5;
+    end
+        puts "Magic evoked."
 end
 def webhost!
     puts "Your host Internet Protocol Address (IP) is: \n"+$ip;
@@ -539,7 +556,7 @@ if ($tutorialon===false) then
 end 
 end
         
-        
+$loadedplugin=''        
         
         
 #Play: start playing GameGrid!
@@ -547,7 +564,11 @@ def play
     #Check if tutorial is completed.
     if ($tutorialcomp!=true) then; return "Please complete the tutorial by typing tutorial and hitting enter, before you start the game. To start the tutorial, type 'tutorial' and hit the enter/return key."; end;
     
-        
+    #Sector -1 is a Developer testing sector.
+    if ($sector==-1)
+        puts "Welcome, to the Developer Plugin Test sector, referred to as Sector -1. Use this sector to access loaded plugins, easily. DO NOT use Sector 0, for any uses, unless you are an administrator of GameGrid. Thank you. The loaded plugin is processing... When done loading, your most recently installed plugin will activate...\n\n"
+        eval($loadedplugin)
+    end
         #==== D1, S1====#
     if ($sector==1) then
         puts "Hello, and welcome to GameGrid! We see you've completed the tutorial nicely, so we're letting you into Dimension I (or D1). The first dimension, is a new world to you. It's exactly where you'll begin your search for The Royal Eyes. They are your token to achieving a huge advantage, and unlocking Dimension II (D2). There are a few new variables you should master: $dimension, shows your current dimension,, $sector, shows your current sector. You don't really need a tutorial to practice those, so we're movin' on!\n\n"
@@ -603,17 +624,106 @@ def play
                 puts "Awesome! Good job, thinking logically. The snake's eye gradually closed, and the snake burnt to ashes. Now, we need to stop this factory. Let's attack that circuit board, over there. Type attack(:circuitboard) to do so!"; facdestroyedd=false;
                 command=gets; if command.index(":circuitboard")!=nil then; facdestroyedd=true; else; puts "Oh no! You mistyped! The computer broke down. Type play to restart Sector 2, and use the answers you know to get back, and oh, remember to type correctly! :D"; end;
                 if (facdestroyedd==true) then
-                    puts "Way to go! The circuits exploded, and the factory closed down. We can now get to Sector 3. Good job!"
+                    puts "Way to go! The circuits exploded, and the factory closed down. I put some white magic in your pockets, just in case. We can now get to Sector 3. Good job!"
                     $sector=3;
                 end
             end
         end
     end
                 #D1, S3
-    #D1, Sector 3 code here 
-                #blah
+    if ($sector==3) then
+        $weapon=:stone_ax;
+        puts "Hello, and welcome to Sector 3. You are currently in a vast desert, it seems. But see that boulder over there? Behind that huge rock, is a 10-foot tall soldier. Many of our soldiers couldn't defeat such a large man. He's defense is very easy to overtake, but his attacks are powerful blows. First, let's get a better weapon. Look, over there! Someone seems to have forgotten their iron sword! Pick it up, using pickup(:iron_sword) command!"
+        command=gets; $weapon=:iron_sword if (command.index("pickup")!=nil&&command.index(":iron_sword")!=nil);
+        if ($weapon==:iron_sword) then
+            puts "Iron swords are much more powerful than stone axes. But more than attack power, we need defense. What about we use the white magic we stored? Here's a new command for you, called evoke. The evoke command activates the power of magic. For white magic, we call it like this: evoke(:whitemagic). This will help you in battle, when you only have 1 or 1/2 lives left. Let's take him by surprise at first. He's probably asleep right now. Go get him! Oh, and his weakpoint is his neck, as he fractured it very bad. But he's so tall, we can't even reach his neck! Wait, I have an idea! I'll teach you another evoke command: evoke(:greenmagic_levitate). It's long, but worth it. It'll raise your altitude! Use it now, to prepare:"; $altitude=10;
+        command=gets; 
+            $altitude=15 if command.index("greenmagic_levitate")!=nil;
+            if ($altitude>14) then
+                $loc.x=6; $loc.y=2
+ puts "You're floating at altitude "+$altitude.to_s+"! Good, now let's get him well. He has 7 lives, and an iron sword, too. But don't worry, we'll defeat him. Use the evoke command on white magic to heal yourself. Let's do this! Let's creep up on him while he naps. Walk to 3,3, cause that's where he is. You are currently standing at 6,2. You need to walk to 3,3. Go! "
+                while($loc.x!=3||$loc.y!=3)
+                    command=gets; eval(command); 
+                    break if $loc.x==3&&$loc.y==3
+                end
+                if ($loc.x==3&&$loc.y==3) then
+                    #Battle Setup
+                     $battle = {
+                            'target'=>:knee,
+                            'opponent'=>{'name'=>:soldier, 
+                                'lives'=>7,
+                                'energy'=>75,
+                                'active'=>false,
+                                'weapon'=>:iron_sword,
+                                'weakpoint'=>:neck},
+                            'type'=>:close_combat
+                        }
+                    puts "Okay, good. So there he is. His sleeping pouch is like 15 feet long, so it can fit him! OK, first, let's sneak up a small attack on him. Remember, his weakpoint is his fractured neck. Go!"; $lives==5;
+                    command=gets;
+                    eval(command);
+                    if $battle['opponent']['lives']<7 then
+                        puts "YAWWWN! The giant soldier is waking up! Quick, get another hit on him!"
+                        command=gets;
+                        eval(command);
+                        if $battle['opponent']['lives']<5 then
+                            $lives-=3;
+                            puts "URRRGH! The giant soldier is ready to attack! WHAP! Oh no, he whapped you in the face! His hits are VERY hard. You just lost 3 lives, and only have 2!!! Okay, you can either attack him back, or heal yourself magically, by evoking white magic. Go!"; #$lives-=3;
+                            command=gets; eval(command)
+                            
+                            puts "Good! The opponent still stands strong. He gets his fists ready for another whapping! Quick, do something! Either, you can heal yourself, with white magic, or attack him! What do you choose? Do it!";         command=gets; eval(command)
+                            if ($battle["opponent"]["lives"]<=0) then
+                                puts "Boom! The soldier slid to the ground, as his eyes closed, and his movement decreased. We did it! Let's move up to Sector 4."; $sector=4; return "Let's have some fun, cause we just entered the 4th Sector! Type play to start the 4th Sector!"; end
+                            puts "Good job! You have #{$lives} lives, and the opponent has #{$battle['opponent']['lives']} lives. But the battle hasn't finished yet! Let's go and show him what we can do! Cause we are—WHAP! HE whapped you AGAIN!"; $lives-=3;
+                            checkdeads();
+                            return "OWW! Oh, that's not good. You died! Those hits were hard. Wait just a sec, I'll fix up your bruises. WHOOSH! There you go, all nice and healthy! Now go get that fiant dude again! Type play to retry that battle!                     "  if dead==true;
+                            puts "Okay, even though you only have #{lives} lives, I know we can still overtake him. You can either heal or attack, but I reccommend attacking, as your opponent has only a few lives, left. Go!"
+                            command=gets; eval(command)
+                            if ($battle["opponent"]["lives"]<=0) then; $sector=4;
+                                puts "Boom! The soldier slid to the ground, as his eyes closed, and his movement decreased. We did it! Let's move up to Sector 4."; return "Let's have some fun, cause we just entered the 4th Sector! Type play to advance to Sector 4!"
+                            else
+                                puts "Oh no! I see that the opponent is preparing a SUPERBLAST! We should have attacked those times, instead of healing! BOOOOM!!!!!!!"; $lives==0; checkdeads();
+                                return "OWW! Oh, that's not good. You died! Those hits were hard. Wait just a sec, I'll fix up your bruises. WHOOSH! There you go, all nice and healthy! Now go get that fiant dude again! Type play to retry that battle! Oh, and try not to keep attacking or keep healing all the time!"  if $dead==true;
+                                
+                            end
+                        end
+                    end
+                end
+            end
+        
+        end
+        
+    end
+    #D1, S4
+    if ($sector==4) then
+        puts "Let's have some fun, cause we just entered the 4th Sector!"
+        
+    end
 end
-
-
-
 beginning_survey() unless $begsurvdone===true;
+
+#BETA 0.9.6 CONTENT
+$usebetacontent=true; $ccellar='';
+begin
+    if ($usebetacontent) then
+            $plgvaldb=''; 
+            File.open("plgvaldb.rb", "r").each_line do |line|
+                $plgvaldb+=line
+            end
+        $plgvaldb=eval($plgvaldb)
+        def install(id)
+            puts "Tracking plugin ID..."
+            id=id.to_s
+            raker=$plgvaldb[id]
+            $loadedplugin=raker.to_s
+            puts "Your plugin, #{id} has been loaded. To run this plugin, you can either type $sector=-1; play if you have completed the tutorial, or you can type runplugin() to run the plugin, even if the tutorial was not done. Thank you."
+        end
+        def runplugin()
+            error("No plugin loaded yet",LoadError) if ($loadedplugin=='');
+            eval($loadedplugin);
+        end
+        #eval($ccellar)
+    end
+rescue
+$usebetacontent=false; log("Beta content disable due to error rescuer"); retry
+end
+   
