@@ -9,10 +9,10 @@
             }
                 #Console Functions
                 def log(msg)
-                    $console[:log]+="\n"+msg;
+                    $console[:log]+=Time.now.to_s+":   "+msg;
                 end
                 def error(msg, errorType=StandardError)
-                    $console[:log]+="\n"+"Error: "+msg;
+                    log("ERROR - "+msg+" ET: "+errortype.name)
                     $console[:errors]+="\n"+msg;
                     raise errorType, msg
                 end
@@ -682,7 +682,7 @@ def play
                                 puts "Boom! The soldier slid to the ground, as his eyes closed, and his movement decreased. We did it! Let's move up to Sector 4."; return "Let's have some fun, cause we just entered the 4th Sector! Type play to advance to Sector 4!"
                             else
                                 puts "Oh no! I see that the opponent is preparing a SUPERBLAST! We should have attacked those times, instead of healing! BOOOOM!!!!!!!"; $lives==0; checkdeads();
-                                return "OWW! Oh, that's not good. You died! Those hits were hard. Wait just a sec, I'll fix up your bruises. WHOOSH! There you go, all nice and healthy! Now go get that fiant dude again! Type play to retry that battle! Oh, and try not to keep attacking or keep healing all the time!"  if $dead==true;
+                                return "OWW! Oh, that's not good. You died! Those hits were hard. Wait just a sec, I'll fix up your bruises. WHOOSH! There you go, all nice and healthy! Now go get that giant dude again! Type play to retry that battle! Oh, and try not to keep attacking or keep healing all the time!"  if $dead==true;
                                 
                             end
                         end
@@ -701,29 +701,50 @@ def play
 end
 beginning_survey() unless $begsurvdone===true;
 
-#BETA 0.9.6 CONTENT
-$usebetacontent=true; $ccellar='';
+#PLUGINS
+$useplugindata=true; #$ccellar='';
 begin
-    if ($usebetacontent) then
+    if ($useplugindata) then
             $plgvaldb=''; 
             File.open("plgvaldb.rb", "r").each_line do |line|
                 $plgvaldb+=line
             end
+            #rescue SyntaxError
+            
         $plgvaldb=eval($plgvaldb)
-        def install(id)
-            puts "Tracking plugin ID..."
-            id=id.to_s
-            raker=$plgvaldb[id]
-            $loadedplugin=raker.to_s
-            puts "Your plugin, #{id} has been loaded. To run this plugin, you can either type $sector=-1; play if you have completed the tutorial, or you can type runplugin() to run the plugin, even if the tutorial was not done. Thank you."
-        end
-        def runplugin()
-            error("No plugin loaded yet",LoadError) if ($loadedplugin=='');
-            eval($loadedplugin);
-        end
+        module Plugin
+            def self.new(rubycode, name="Plugin.new")
+                $plgvaldb[name.to_s]=rubycode.to_s
+                hasher={name.to_s=>rubycode.to_s}
+                puts "To install only locally, use Plugin.install(#{name}).\n To push to GameGrid servers, so the public can install your plugin, send an email with your Plugin name and Plugin code to tt2d [at] icloud [dot] com. \nTo see the output of your plugin, use self.load with an argument equal to this hash: \n"
+                return hasher
+            end
+            def self.load(hasher)
+                error("Argument must be a hash, formulated by Plugin.load(code,name) function",ArgumentError) if hasher.class!=Hash;
+                eval(hasher.values[0])
+            end
+            def self.loadAll(*pk)
+                loadnum=0
+                while (loadnum<pk.length)
+                    self.load(pk[loadnum])
+                    loadnum+=1;
+                end
+            end
+            def self.install(id)
+                puts "Tracking plugin ID..."
+                id=id.to_s
+                raker=$plgvaldb[id]
+                $loadedplugin=raker.to_s
+                puts "Your plugin, #{id} has been loaded. To run this plugin, you can either type $sector=-1; play if you have completed the tutorial, or you can type Plugin.run() to run the plugin, even if the tutorial was not done. Thank you."
+            end
+            def self.run()
+                raise "No plugin loaded yet", LoadError if ($loadedplugin=='');
+                eval($loadedplugin);
+            end
         #eval($ccellar)
+        end
     end
 rescue
-$usebetacontent=false; log("Beta content disable due to error rescuer"); retry
+$useplugindata=false; log("Plugin content disable due to error rescuer"); retry
 end
-   
+    
