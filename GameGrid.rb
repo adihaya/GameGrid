@@ -404,6 +404,22 @@ end
 def webhost!
     puts "Your host Internet Protocol Address (IP) is: \n"+$ip;
 end
+def combine(*material)
+    hash={'use'=>'craft', 'combined'=>true, 'material'=>material, 'id'=>rand(9999999999999)}
+    puts hash
+end
+def craft(formation, combination)
+    combination['material'].map!(&:to_s); formation=formation.to_s
+    fullmapper={
+        'sword'=>{ ["cotton", "iron", "water"]=>":rust_sword" }
+        }
+    materials=combination['material'].sort;
+    shmapper=fullmapper[formation.to_s]
+    wnum=0; trud=false;
+    tool=shmapper[materials];
+    puts "\nCrafting...\n\n Here is your tool:\n"
+    puts tool
+end
     $weapon_choices=[:stone_sword, :rust_sword, :iron_sword, :blackmagic_sword, :whitemagic_sword, :yinyang_sword, :diamond_sword, :stone_ax, :rust_ax, :iron_ax, :diamond_ax, :fists, :firebreath, :hyperbeam, :powerbeam];
 $weapon= :fists;
 #Walk: walk around the grid
@@ -695,8 +711,19 @@ def play
     end
     #D1, S4
     if ($sector==4) then
-        puts "Let's have some fun, cause we just entered the 4th Sector!"
-        
+        puts "You look tired, fromm battling all those badguys! So I registered you in Crafting Class, a class, where they teach you the art of crafting. Crafting is a fundamental way to create Tools out of Substances. Let's learn how to craft!\n\nOkay, first, crafting is 60% Logic, 25% Background Knowledge, and 15% Randomness. So you need to think of substances that, when combined, create the tool you are looking for. Today, we will build a rust sword, which is very similar to the iron sword, but has a bit more advantages. Technically, when crafting, nobody will help you, but today, I will assist you while crafting. Before skipping to the next paragraph, think of the core materials needed for the rust sword!\n\nOkay, so you might have thought of rust, and cotton which is used to make the part where you hold the sword. These are still not correct! When crafting, we need to keep breaking down the substances as much as possible. So we break down rust, into......       iron and water! So iron, water, and cotton make the rust sword! But, we need to structure this out, so we don't end up crafting a rusty nail in a cotton bag! How do we do that? By using formations! Formations are the key structure behind your tool. The formation of a rust sword, would be the 'sword' formation. In the next paragraph, we'll get into the method of crafting.\n\nTo craft, you use the combine and craft commands. First, we need to combine all 3 fundamental elements. Type combine(:water, :iron, :cotton) in any order:\n\n"
+        command=gets; eval(command)
+        if (command.index(":water")!=nil&&command.index(":iron")!=nil&&command.index(":cotton")!=nil&&command.index("combine")!=nil) then
+            puts "\n\nDid you see that weird stuff it gave off? Looks weird, but it is key to crafting. So copy that stuff above (select it with cursor, then CTRL+C or COMMAND+C) for crafting's sake. Now, lets actually craft it! Remember, the formation is :sword. So start typing craft(:sword, and then stop typing. Now paste all that weird stuff you just copied (CTRL+V or COMMAND+V). After pasting, type an ending bracket ) to finish it off. Hit enter, to see if it worked!"
+            command=gets; eval(command)
+            if (command.index('material')!=nil) then
+                puts "Congrats! You crafted your first sword. I'll let you keep that rust sword for future battles. Let's go to Sector 5!"; sector=5; 
+            else; puts "Oh no, that's not correct. Command play to try again."; end;
+        end
+    end
+    #D1, S5
+    if ($sector==5) then
+        #sector 5 code
     end
 end
 beginning_survey() unless $begsurvdone===true;
