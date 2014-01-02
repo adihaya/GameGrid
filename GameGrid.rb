@@ -411,7 +411,8 @@ end
 def craft(formation, combination)
     combination['material'].map!(&:to_s); formation=formation.to_s
     fullmapper={
-        'sword'=>{ ["cotton", "iron", "water"]=>":rust_sword" }
+        'sword'=>{ ["cotton", "iron", "water"]=>":rust_sword" },
+        'umbrella'=>{ ["iron","plastic","steel"]=>":reinforced_metallic_umbrella"}
         }
     materials=combination['material'].sort;
     shmapper=fullmapper[formation.to_s]
@@ -585,6 +586,7 @@ def play
         puts "Welcome, to the Developer Plugin Test sector, referred to as Sector -1. Use this sector to access loaded plugins, easily. DO NOT use Sector 0, for any uses, unless you are an administrator of GameGrid. Thank you. The loaded plugin is processing... When done loading, your most recently installed plugin will activate...\n\n"
         eval($loadedplugin)
     end
+if ($dimension==1) then
         #==== D1, S1====#
     if ($sector==1) then
         puts "Hello, and welcome to GameGrid! We see you've completed the tutorial nicely, so we're letting you into Dimension I (or D1). The first dimension, is a new world to you. It's exactly where you'll begin your search for The Royal Eyes. They are your token to achieving a huge advantage, and unlocking Dimension II (D2). There are a few new variables you should master: $dimension, shows your current dimension,, $sector, shows your current sector. You don't really need a tutorial to practice those, so we're movin' on!\n\n"
@@ -707,7 +709,7 @@ def play
             end
         
         end
-        
+      
     end
     #D1, S4
     if ($sector==4) then
@@ -717,14 +719,54 @@ def play
             puts "\n\nDid you see that weird stuff it gave off? Looks weird, but it is key to crafting. So copy that stuff above (select it with cursor, then CTRL+C or COMMAND+C) for crafting's sake. Now, lets actually craft it! Remember, the formation is :sword. So start typing craft(:sword, and then stop typing. Now paste all that weird stuff you just copied (CTRL+V or COMMAND+V). After pasting, type an ending bracket ) to finish it off. Hit enter, to see if it worked!"
             command=gets; eval(command)
             if (command.index('material')!=nil) then
-                puts "Congrats! You crafted your first sword. I'll let you keep that rust sword for future battles. Let's go to Sector 5!"; sector=5; 
+                puts "Congrats! You crafted your first sword. I'll let you keep that rust sword for future battles. Let's go to Sector 5!\n\n"; sector=5; 
             else; puts "Oh no, that's not correct. Command play to try again."; end;
         end
     end
     #D1, S5
     if ($sector==5) then
-        #sector 5 code
+        puts "Hi, and welcome to the 5th Sector. See that man over there, surrounded by bodyguards, soldiers, and a 15-people army? That's Yuni, Zuki's close brother. Yuni is very greedy, and is very talented at the art of trickery and technology. He guards the tunnel into the 2nd Dimension, where Zuki resides. We need to get through him. And a battle is waiting to happen. But don't think about swords and axes. His duels are in knowledge, because he has something called Bing, which lets him find answers to all questions. He'll ask a question, you'll need to type the answer. If you answer all 3 questions correct, he will let you pass into the portal. But don't worry, cause you have something called Google, at your side. Open www.google.com and search for answers. 1 question is also multiple choice, and you must type the letter of your answer. Get Google ready! Type anything and press enter to begin."
+        typeanything=gets; yqn=1; wrongsentence="Yuni:' THAT'S WRONG! HA! HA! '                                  What a mean guy. Just type play and hit enter, to retry."
+        if (yqn==1) then
+            puts "Yuni: What is the meaning of 'endemic'? Type the letter of your answer:"
+            puts "\n\n[a]: characteristic of or prevalent in a particular field, area, or environment"
+            puts "\n[b]:a virus like the flu, which gets passed around easily"
+            puts "\n[c]:a local population of organisms of the same kind, especially one in which the genetic mix is similar throughout the group"
+            answer=gets.chomp.to_s; 
+            yqn=2 if answer=="a";
+            return wrongsentence if answer!="a"; 
+        end
+        if (yqn==2) then
+            puts "\n\nYuni: What is a group of kangaroos called?"
+            answer=gets.chomp.to_s; 
+            yqn=3 if answer=="mob"||answer=="herd"||answer=="troop";
+            return wrongsentence if answer!="mob"&&answer!="herd"&&answer&&"troop";
+        end    
+        if (yqn==3) then
+            puts "\n\nYuni: What is the popular video sharing website, based and founded in November 2004?";
+            answer=gets.chomp.to_s; 
+            yqn=4 if answer.index("vimeo")!=nil||answer.index("Vimeo")!=nil;
+            return wrongsentence if answer.index("vimeo")==nil&&answer.index("Vimeo")==nil;
+        end
+        if (yqn==4) then
+            puts "\n\n\nYuni: Arrrgh. You got throught me this time. **steps aside**\n\n"+scrape_username+", there's your portal to Dimension 2!! Let's hop in! WHOOOOOSH\n\n"; $dimension=2; $sector=1;
+        end
     end
+end
+if ($dimension==2) then
+    if ($sector==1) then
+    puts "\nWelcome to Dimension 2. Although, you won't really feel welcome, cause I can summarize my thoughts like this: What a vast, dangerous garbage dump. It's like an entire world-wide landfill, set on fire! Dimension 2 is not where you'd want to be. But we're here, because the Zuki army lies in here, and we're here to defeat them.  So we practically have no real choice. Oh well. We're currently a bit far from the area in which Zuki and his army resides in. And right now, it's raining lava. Good thing is, we're under our umbrella. But the umbrella's cracking! We need to craft a metallic umbrella! Go and craft an metal umbrella. Umbrella handles are made out of plastic, and the top must be iron and steel. Go craft, before we walk in a magma shower! Start combining elements, first: "
+    command=gets; eval command;
+    puts "Now copy what you got above, and craft it now, with the umbrella formation:"
+    command=gets; eval command;
+        if (command.index("id")!=nil&&command.index("umbrella")!=nil) then
+            puts "Whew, good! That was easy. Let's go to Sector 2!\n\n"; $sector=2;
+        end
+    end
+    if ($sector==2) then
+        puts "\n\nYou thought Dimension 2 was easy, cause Sector 1 was. But no, Dimension 2 is the opposite of heaven. Welcome to Sector 2 of the 2nd Dimension, although it's unwelcoming."
+    end
+end
 end
 beginning_survey() unless $begsurvdone===true;
 
