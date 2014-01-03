@@ -1,5 +1,6 @@
 GameGrid
 ============
+[![Coverage Status](https://coveralls.io/repos/adihaya/GameGrid/badge.png)](https://coveralls.io/r/adihaya/GameGrid)
 An in-command-prompt game only in beta mode, built with the Ruby language. The game is based on legends, and currently only has a tutorial preview. It lets you use "commands" like walk(1,2) to walk 1 foot up, and 2 feet right. You can also use commands like attack(:stomach) in battles.
 
 ## Installation
