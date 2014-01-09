@@ -23,6 +23,7 @@
                     errorA("Argument '#{arg}' is not a #{exptype}.") unless arg.is_a?( expclass);
                     log("Checking arguments using checkA method... input:#{arg} expected type:#{expclass}")
                 end
+                
                 # Now using Begin/Rescue commands to fix IP issues
         $platsur="cp";
         begin 
@@ -476,6 +477,8 @@ end
 #============== END Commands =====
 #Play: start the game tutorial
 def tutorial
+    #Update stats
+    GGUtils.fetch(); $tutorialon=$tutorialcomp;
 if ($tutorialon===true) then
     $loc.x=1; $loc.y=1; # Reset current loc
     puts "Hello, my friend "+$client_info[:username]+", I've been waiting to show you this very cool computer video game called GameGrid. The weird part is, you don't see anything, you just type commands and stuff! Here, why don't we begin the tutorial.\n\n\n"
@@ -576,8 +579,70 @@ end
 $loadedplugin=''        
         
         
+#GGUtils & more: some required GG utilities
+               $scfile='';
+    $scfilename = '/zscores.rb'
+if (File.exists? $scfilename)==false then
+    File.open($scfilename, 'w') do |file| 
+        file.write "{ :sector=>1, :dimension=>1, :data=>{}, :console=>'', :tc=>false}"
+    end
+end
+    
+File.open($scfilename, "r") do |infile|
+    while (line = infile.gets)
+        #counter = counter + 1
+        $scfile+=line;
+    end
+end
+$schash=eval($scfile);
+$sector=$schash[:sector]; $dimension=$schash[:dimension]; $zrdata=$schash[:data]; $console[:rc]=$schash[:console]; $tutorialcomp=$schash[:tc]
+    
+module GGUtils
+    def self.push
+        $scfile,$newscf="{ :sector=>"+$sector.to_s+", :dimension=>"+$dimension.to_s+", :data=>"+$zrdata+", :console=>"+$console.to_s+":tc=>"+$tutorialcomp+"} "
+       File.open('/zscores.rb', 'w') { |file| file.write($scfile) }; 
+    end
+    def self.pull
+        unless (File.exists?($scfilename)==false) then
+        $scfile='';
+        File.open($scfilename, "r") do |infile|
+            while (line = infile.gets)
+                counter = counter + 1
+                $scfile+=line;
+            end
+        end
+        $schash=eval($scfile);
+        return $schash;
+        end
+        return "Error. ";
+    end
+    def self.mpull
+        unless (File.exists?($scfilename)==false) then
+        $scfile='';
+        File.open($scfilename, "r") do |infile|
+            while (line = infile.gets)
+                counter = counter + 1
+                $scfile+=line;
+            end
+        end
+        $schash=eval($scfile);
+        return $scfile;
+        end
+        return "Error. ";
+    end
+    def self.fetch
+        self.pull();
+        #$schash=self.pull();
+        #$sector=self.pull[:sector].to_i;
+        #$console[:log]+="$schash:   "+$schash
+        #$dimension=$schash[:dimension].to_s.to_i; $zrdata=$schash[:data];
+        #$console[:rc]=$schash[:console]; $tutorialcomp=$schash[:tc]
+    end
+end
 #Play: start playing GameGrid!
 def play
+    #Update stats
+    GGUtils.fetch();
     #Check if tutorial is completed.
     if ($tutorialcomp!=true) then; return "Please complete the tutorial by typing tutorial and hitting enter, before you start the game. To start the tutorial, type 'tutorial' and hit the enter/return key."; end;
     
@@ -691,7 +756,7 @@ if ($dimension==1) then
                             puts "Good! The opponent still stands strong. He gets his fists ready for another whapping! Quick, do something! Either, you can heal yourself, with white magic, or attack him! What do you choose? Do it!";         command=gets; eval(command)
                             if ($battle["opponent"]["lives"]<=0) then
                                 puts "Boom! The soldier slid to the ground, as his eyes closed, and his movement decreased. We did it! Let's move up to Sector 4."; $sector=4; return "Let's have some fun, cause we just entered the 4th Sector! Type play to start the 4th Sector!"; end
-                            puts "Good job! You have #{$lives} lives, and the opponent has #{$battle['opponent']['lives']} lives. But the battle hasn't finished yet! Let's go and show him what we can do! Cause we are—WHAP! HE whapped you AGAIN!"; $lives-=3;
+                            puts "Good job! You have #{$lives} lives, and the opponent has #{$battle['opponent']['lives']} lives. But the battle hasn't finished yet! Let's go and show him what we can do! Cause we are-WHAP! HE whapped you AGAIN!"; $lives-=3;
                             checkdeads();
                             return "OWW! Oh, that's not good. You died! Those hits were hard. Wait just a sec, I'll fix up your bruises. WHOOSH! There you go, all nice and healthy! Now go get that fiant dude again! Type play to retry that battle!                     "  if dead==true;
                             puts "Okay, even though you only have #{lives} lives, I know we can still overtake him. You can either heal or attack, but I reccommend attacking, as your opponent has only a few lives, left. Go!"
@@ -816,4 +881,4 @@ begin
 rescue
 $useplugindata=false; log("Plugin content disable due to error rescuer"); retry
 end
-    
+   # GGUtils.fetch(); puts $tutorialcomp;
