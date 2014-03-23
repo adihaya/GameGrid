@@ -1,7 +1,7 @@
 #% cat hola.gemspec
 Gem::Specification.new do |s|
   s.name        = 'GameGrid'
-  s.version     = '0.9.5.2.8'
+  s.version     = '0.9.5.3.9'
   s.date        = '2014-01-10'
   s.summary     = "An in-command-line adventure game, filled with attacking, crafting, etc"
   s.required_ruby_version = '>= 1.8.7'

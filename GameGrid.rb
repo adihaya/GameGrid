@@ -691,7 +691,7 @@ if ($dimension==1) then
                             puts "Good! The opponent still stands strong. He gets his fists ready for another whapping! Quick, do something! Either, you can heal yourself, with white magic, or attack him! What do you choose? Do it!";         command=gets; eval(command)
                             if ($battle["opponent"]["lives"]<=0) then
                                 puts "Boom! The soldier slid to the ground, as his eyes closed, and his movement decreased. We did it! Let's move up to Sector 4."; $sector=4; return "Let's have some fun, cause we just entered the 4th Sector! Type play to start the 4th Sector!"; end
-                            puts "Good job! You have #{$lives} lives, and the opponent has #{$battle['opponent']['lives']} lives. But the battle hasn't finished yet! Let's go and show him what we can do! Cause we are—WHAP! HE whapped you AGAIN!"; $lives-=3;
+                            puts "Good job! You have #{$lives} lives, and the opponent has #{$battle['opponent']['lives']} lives. But the battle hasn't finished yet! Let's go and show him what we can do! Cause we are-WHAP! HE whapped you AGAIN!"; $lives-=3;
                             checkdeads();
                             return "OWW! Oh, that's not good. You died! Those hits were hard. Wait just a sec, I'll fix up your bruises. WHOOSH! There you go, all nice and healthy! Now go get that fiant dude again! Type play to retry that battle!                     "  if dead==true;
                             puts "Okay, even though you only have #{lives} lives, I know we can still overtake him. You can either heal or attack, but I reccommend attacking, as your opponent has only a few lives, left. Go!"
@@ -764,8 +764,9 @@ if ($dimension==2) then
         end
     end
     if ($sector==2) then
-        puts "\n\nYou thought Dimension 2 was easy, cause Sector 1 was. But no, Dimension 2 is the opposite of heaven. Welcome to Sector 2 of the 2nd Dimension, although it's unwelcoming."
-    end
+    	puts "You just rented a nice 5-Star hotel from the Dim2 Hotel Chain. You're walking back home on the rocky streets of the second dimension, under the dark, rainy, night sky. BOOM You feel a sharp blow on your neck! Your vision blacks out, as you lose conciousness."
+		require "./D2S2/game.rb"
+	end
 end
 end
 beginning_survey() unless $begsurvdone===true;
